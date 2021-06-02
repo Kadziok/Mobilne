@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "970624933892",
+    "firebase_url": "https://mapevent-83be9-default-rtdb.firebaseio.com",
+    "project_id": "mapevent-83be9",
+    "storage_bucket": "mapevent-83be9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:970624933892:android:dc47f287ccc9fa0ed45551",
+        "android_client_info": {
+          "package_name": "com.example.gtamapirl"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "970624933892-gce1ro16dmn8e7r496n0qanhg272hkvm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCUApr6v4oxPPVjA5_C5mK_lC0-Xrfe_Zk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "970624933892-gce1ro16dmn8e7r496n0qanhg272hkvm.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
