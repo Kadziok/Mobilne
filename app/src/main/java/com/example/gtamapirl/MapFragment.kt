@@ -19,6 +19,7 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 
 class MapFragment : Fragment() {
@@ -42,7 +43,6 @@ class MapFragment : Fragment() {
         getLocationPermission()
     }
 
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -56,6 +56,10 @@ class MapFragment : Fragment() {
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this.context)
         val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
         mapFragment?.getMapAsync(callback)
+
+        view.findViewById<FloatingActionButton>(R.id.fab).setOnClickListener{
+            setLocation()
+        }
     }
 
     override fun onPause() {
@@ -63,12 +67,14 @@ class MapFragment : Fragment() {
         val sharedPref: SharedPreferences? = activity?.getPreferences(Context.MODE_PRIVATE)
         val editor = sharedPref?.edit()
 
-        editor?.putFloat(KEY_LATITUDE, map!!.cameraPosition.target.latitude.toFloat())
-        editor?.putFloat(KEY_LONGITUDE, map!!.cameraPosition.target.longitude.toFloat())
-        editor?.putFloat(KEY_ZOOM, map!!.cameraPosition.zoom)
-        editor?.putFloat(KEY_TILT, map!!.cameraPosition.tilt)
-        editor?.putFloat(KEY_BEARING, map!!.cameraPosition.bearing)
-        editor?.commit()
+        if(map!=null) {
+            editor?.putFloat(KEY_LATITUDE, map!!.cameraPosition.target.latitude.toFloat())
+            editor?.putFloat(KEY_LONGITUDE, map!!.cameraPosition.target.longitude.toFloat())
+            editor?.putFloat(KEY_ZOOM, map!!.cameraPosition.zoom)
+            editor?.putFloat(KEY_TILT, map!!.cameraPosition.tilt)
+            editor?.putFloat(KEY_BEARING, map!!.cameraPosition.bearing)
+            editor?.commit()
+        }
     }
 
     private fun setCamera() {
@@ -127,7 +133,7 @@ class MapFragment : Fragment() {
 
     private fun getLocationPermission() {
         if (ActivityCompat.checkSelfPermission(
-                this.context!!,
+                this.requireContext(),
                 Manifest.permission.ACCESS_FINE_LOCATION)
             != PackageManager.PERMISSION_GRANTED
         ) {
