@@ -9,6 +9,25 @@
         android:id="@+id/nav_home"
         android:name="com.example.gtamapirl.MapFragment"
         android:label="@string/menu_home"
-        tools:layout="@layout/fragment_map" />
+        tools:layout="@layout/fragment_map">
+
+        <action
+            android:id="@+id/action_setMarker"
+            app:destination="@id/fragment_add_event" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/fragment_add_event"
+        android:name="com.example.gtamapirl.AddSpecificEventFragment"
+        android:label="Dodaj nowe wydarzenie"
+        tools:layout="@layout/fragment_add_specific_event">
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_account"
+        android:name="com.example.gtamapirl.AccountFragment"
+        android:label="Moje konto"
+        tools:layout="@layout/fragment_account">
+    </fragment>
 
 </navigation>

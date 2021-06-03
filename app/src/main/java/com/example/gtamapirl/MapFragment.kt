@@ -12,6 +12,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.NavHostFragment.findNavController
+import androidx.navigation.fragment.findNavController
 import com.google.android.gms.location.*
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -41,6 +43,10 @@ class MapFragment : Fragment() {
         this.map = map
         setCamera()
         getLocationPermission()
+        map.setOnMapLongClickListener { latLng ->
+            Log.d("Tu kliknolem:", latLng.toString())
+            findNavController().navigate(R.id.action_setMarker)
+        }
     }
 
     override fun onCreateView(
