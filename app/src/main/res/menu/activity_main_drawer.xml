@@ -12,5 +12,9 @@
             android:id="@+id/nav_account"
             android:icon="@drawable/ic_menu_account"
             android:title="@string/menu_account" />
+        <item
+            android:id="@+id/nav_events_list"
+            android:icon="@drawable/ic_menu_account"
+            android:title="@string/menu_events" />
     </group>
 </menu>

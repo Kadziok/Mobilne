@@ -7,4 +7,8 @@
     <string name="menu_account">Account</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="change_email">Change email</string>
+    <string name="reset_password">Reset password</string>
+    <string name="reset_password_msg">Password resetting link was sent to </string>
+    <string name="menu_events">My events</string>
 </resources>

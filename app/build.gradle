@@ -9,6 +9,10 @@ android {
     compileSdkVersion 30
     buildToolsVersion "30.0.2"
 
+    buildFeatures {
+        viewBinding = true
+    }
+
     defaultConfig {
         applicationId "com.example.gtamapirl"
         minSdkVersion 21
@@ -53,4 +57,6 @@ dependencies {
     implementation 'com.google.firebase:firebase-database-ktx'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+
+    implementation 'com.firebaseui:firebase-ui-database:7.1.1'
 }

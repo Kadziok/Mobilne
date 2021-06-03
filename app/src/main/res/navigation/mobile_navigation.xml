@@ -30,4 +30,11 @@
         tools:layout="@layout/fragment_account">
     </fragment>
 
+    <fragment
+        android:id="@+id/nav_events_list"
+        android:name="com.example.gtamapirl.EventsListFragment"
+        android:label="Moje wydarzenia"
+        tools:layout="@layout/fragment_events_list">
+    </fragment>
+
 </navigation>
