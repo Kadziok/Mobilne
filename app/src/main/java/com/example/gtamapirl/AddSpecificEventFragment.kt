@@ -10,7 +10,6 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog
-import com.wdullaer.materialdatetimepicker.time.TimePickerDialog
 import java.util.*
 
 var location: String = "null"
@@ -32,6 +31,7 @@ class AddSpecificEventFragment : Fragment() {
         var yearTo: Int = -1
         var monthTo: Int = -1
         var dayTo: Int = -1
+
         //TODO USTAW LOKALIZACJE LABEL POTRZEBA CHYBA POBRAC Z MAP FRAGMENT
 
         view.findViewById<TextView>(R.id.location).text = location

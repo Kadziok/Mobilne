@@ -12,7 +12,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.NavHostFragment.findNavController
 import androidx.navigation.fragment.findNavController
 import com.google.android.gms.location.*
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -43,8 +42,8 @@ class MapFragment : Fragment() {
         this.map = map
         setCamera()
         getLocationPermission()
+
         map.setOnMapLongClickListener { latLng ->
-            Log.d("Tu kliknolem:", latLng.toString())
             val location = latLng.toString()
             AddSpecificEventFragment.setLocation(location)
             findNavController().navigate(R.id.action_setMarker)
