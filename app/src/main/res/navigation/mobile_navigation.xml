@@ -21,6 +21,10 @@
         android:name="com.example.gtamapirl.AddSpecificEventFragment"
         android:label="Dodaj nowe wydarzenie"
         tools:layout="@layout/fragment_add_specific_event">
+        <argument
+            android:name="location"
+            app:argType="string"
+            android:defaultValue="idk where" />
     </fragment>
 
     <fragment

@@ -23,7 +23,7 @@
         app:layout_constraintVertical_bias="0.041" />
 
     <TextView
-        android:id="@+id/textView5"
+        android:id="@+id/location"
         android:layout_width="358dp"
         android:layout_height="62dp"
         android:text="Lokalizacja: ..."
@@ -56,7 +56,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.09"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView5"
+        app:layout_constraintTop_toBottomOf="@+id/location"
         app:layout_constraintVertical_bias="0.0" />
 
     <Button
@@ -69,7 +69,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.88"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView5"
+        app:layout_constraintTop_toBottomOf="@+id/location"
         app:layout_constraintVertical_bias="0.0" />
 
     <TextView

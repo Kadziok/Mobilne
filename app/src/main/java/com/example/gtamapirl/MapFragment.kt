@@ -45,6 +45,8 @@ class MapFragment : Fragment() {
         getLocationPermission()
         map.setOnMapLongClickListener { latLng ->
             Log.d("Tu kliknolem:", latLng.toString())
+            val location = latLng.toString()
+            AddSpecificEventFragment.setLocation(location)
             findNavController().navigate(R.id.action_setMarker)
         }
     }
