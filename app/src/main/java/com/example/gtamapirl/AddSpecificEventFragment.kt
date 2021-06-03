@@ -13,6 +13,7 @@ import com.wdullaer.materialdatetimepicker.date.DatePickerDialog
 import com.wdullaer.materialdatetimepicker.time.TimePickerDialog
 import java.util.*
 
+var location: String = "null"
 
 class AddSpecificEventFragment : Fragment() {
 
@@ -31,8 +32,9 @@ class AddSpecificEventFragment : Fragment() {
         var yearTo: Int = -1
         var monthTo: Int = -1
         var dayTo: Int = -1
-
         //TODO USTAW LOKALIZACJE LABEL POTRZEBA CHYBA POBRAC Z MAP FRAGMENT
+
+        view.findViewById<TextView>(R.id.location).text = location
 
         view.findViewById<Button>(R.id.dateFrom).setOnClickListener{
             val now = Calendar.getInstance()
@@ -90,6 +92,10 @@ class AddSpecificEventFragment : Fragment() {
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
             AddSpecificEventFragment().apply {}
+
+        fun setLocation(location2: String) {
+            location = location2
+        }
     }
 
 
