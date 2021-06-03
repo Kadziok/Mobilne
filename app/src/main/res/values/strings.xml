@@ -5,10 +5,9 @@
     <string name="nav_header_desc">Navigation header</string>
     <string name="menu_home">Home</string>
     <string name="menu_account">Account</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="change_email">Change email</string>
-    <string name="reset_password">Reset password</string>
-    <string name="reset_password_msg">Password resetting link was sent to </string>
     <string name="menu_events">My events</string>
+    <string name="menu_addEvent">Add event</string>
+    <string name="account_changeEmail">Change email</string>
+    <string name="account_resetPassword">Reset password</string>
+    <string name="account_resetPassword_msg">Password reset link sent to </string>
 </resources>

@@ -14,13 +14,13 @@ import java.util.*
 
 var location: String = "null"
 
-class AddSpecificEventFragment : Fragment() {
+class AddEventFragment : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_add_specific_event, container, false)
+        return inflater.inflate(R.layout.fragment_add_event, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -91,7 +91,7 @@ class AddSpecificEventFragment : Fragment() {
     companion object {
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
-            AddSpecificEventFragment().apply {}
+            AddEventFragment().apply {}
 
         fun setLocation(location2: String) {
             location = location2

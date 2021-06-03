@@ -12,7 +12,6 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.FirebaseDatabase
 
-
 class AccountFragment : Fragment() {
     private lateinit var cUser: FirebaseUser
 
@@ -39,7 +38,7 @@ class AccountFragment : Fragment() {
             FirebaseAuth.getInstance().sendPasswordResetEmail(cUser.email.toString())
             Toast.makeText(
                 view.context,
-                R.string.reset_password_msg.toString() + cUser.email.toString(),
+                R.string.account_resetPassword_msg.toString() + cUser.email.toString(),
                 Toast.LENGTH_LONG
             ).show()
         }
@@ -51,5 +50,4 @@ class AccountFragment : Fragment() {
             db.child("user_events").child(cUser.uid).child("event_3").setValue(EventElement("event_3", "undecided"))
         }
     }
-
 }

@@ -19,11 +19,6 @@ class EventsListFragment : Fragment() {
     private lateinit var cUser: FirebaseUser
     private lateinit var adapter: EventAdapter
 
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         cUser = FirebaseAuth.getInstance().currentUser!!
