@@ -9,10 +9,15 @@ import com.example.gtamapirl.databinding.FragmentAddEventBinding
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.FirebaseDatabase
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog
+import java.time.Instant
 import java.time.LocalDate
+import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 import java.util.*
+import kotlin.random.Random
 
 class AddEventFragment : Fragment() {
 
@@ -76,7 +81,22 @@ class AddEventFragment : Fragment() {
             binding!!.dateInputLayout.error = getString(R.string.addEvent_error_date_empty)
         }
         else {
-            //TODO adding event
+            val id = DateTimeFormatter.ISO_INSTANT.format(Instant.now()).toString() + Random.nextInt().toString()
+            val userId = binding!!.textInputName.text.toString()
+
+            val newEvent = EventData(
+                id,
+                userId,
+                FirebaseAuth.getInstance().currentUser!!.uid,
+                date.toString(),
+                "Brak czasu",
+                0f,
+                0f,
+                binding!!.textInputDesc.text.toString()
+            )
+
+            val db = FirebaseDatabase.getInstance().reference
+            db.child("events").child(userId).child(id).setValue(newEvent)
         }
     }
 

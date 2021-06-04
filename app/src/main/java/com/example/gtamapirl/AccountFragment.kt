@@ -38,7 +38,7 @@ class AccountFragment : Fragment() {
             FirebaseAuth.getInstance().sendPasswordResetEmail(cUser.email.toString())
             Toast.makeText(
                 view.context,
-                R.string.account_resetPassword_msg.toString() + cUser.email.toString(),
+                getString(R.string.account_resetPassword_msg) + " " + cUser.email.toString(),
                 Toast.LENGTH_LONG
             ).show()
         }
