@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.appcompat.widget.Toolbar
 import androidx.drawerlayout.widget.DrawerLayout
@@ -17,11 +18,11 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import com.google.firebase.database.FirebaseDatabase
 
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var database: DatabaseReference
     private lateinit var cUser: FirebaseUser
     private lateinit var appBarConfiguration: AppBarConfiguration
 
@@ -60,6 +61,18 @@ class MainActivity : AppCompatActivity() {
         if (requestCode == RC_SIGN_IN) {
             if (resultCode == Activity.RESULT_OK) {
                 cUser = FirebaseAuth.getInstance().currentUser!!
+                val db = FirebaseDatabase.getInstance().reference
+                db.child("users").child(cUser.uid).get().addOnSuccessListener {
+                    when (it.value) {
+                        null -> {
+                            val user = UserData(cUser.displayName!!, cUser.email!!)
+                            db.child("users").child(cUser.uid).setValue(user)
+                        }
+                    }
+                }.addOnFailureListener{
+                    Log.e("USERS", "Error to add user to database")
+                }
+
             }
         }
     }
