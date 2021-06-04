@@ -18,7 +18,19 @@
         android:orientation="vertical"
         android:paddingHorizontal="10dp">
 
-        <EditText
+        <fragment
+            android:id="@+id/map"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_marginStart="@dimen/activity_vertical_margin"
+            android:layout_marginTop="@dimen/activity_horizontal_margin"
+            android:layout_marginEnd="@dimen/activity_horizontal_margin"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/eventName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -26,8 +38,9 @@
             android:layout_margin="10dp"
             android:layout_gravity="center"
             android:padding="10dp"
-            android:inputType="text" />
-        <EditText
+            android:inputType="text"
+            android:hint="@string/event_name" />
+        <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/eventDesc"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -35,8 +48,9 @@
             android:layout_margin="10dp"
             android:layout_gravity="center"
             android:padding="10dp"
-            android:inputType="text" />
-        <EditText
+            android:inputType="text"
+            android:hint="@string/event_description" />
+        <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/eventDate"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -44,8 +58,9 @@
             android:layout_margin="10dp"
             android:layout_gravity="center"
             android:padding="10dp"
-            android:inputType="text"/>
-        <EditText
+            android:inputType="text"
+            android:hint="@string/event_date"/>
+        <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/eventTime"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -53,23 +68,43 @@
             android:layout_margin="10dp"
             android:layout_gravity="center"
             android:padding="10dp"
-            android:inputType="text"/>
-        <EditText
-            android:id="@+id/eventStatus"
+            android:inputType="text"
+            android:hint="@string/event_time"/>
+
+        <RadioGroup
+            android:id="@+id/radioGroup2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:orientation="vertical"
             android:layout_margin="10dp"
-            android:layout_gravity="center"
-            android:padding="10dp"
-            android:inputType="text"/>
+            android:checkedButton="@+id/radioButton3"
+            >
+
+            <RadioButton
+                android:id="@+id/radioButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/will_attend" />
+
+            <RadioButton
+                android:id="@+id/radioButton2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/interested" />
+
+            <RadioButton
+                android:id="@+id/radioButton3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/not_interested" />
+        </RadioGroup>
 
         <Button
             android:id="@+id/deleteEvent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Delete event"
+            android:text="@string/delete_event"
             android:visibility="gone"/>
 
 

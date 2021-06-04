@@ -6,8 +6,16 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.RadioGroup
+import android.widget.Toast
 import androidx.navigation.fragment.navArgs
 import com.example.gtamapirl.databinding.FragmentEventBinding
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.OnMapReadyCallback
+import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.CameraPosition
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MarkerOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.DataSnapshot
@@ -26,6 +34,7 @@ class EventFragment : Fragment() {
     private lateinit var eventId: String
     private lateinit var db: FirebaseDatabase
     private lateinit var cUser: FirebaseUser
+    private lateinit var callback: OnMapReadyCallback
 
 
     override fun onCreateView(
@@ -43,6 +52,9 @@ class EventFragment : Fragment() {
         db = Firebase.database
 
         binding!!.deleteEvent.setOnClickListener { deleteEvent() }
+        binding!!.radioGroup2.setOnCheckedChangeListener { group, checkedId ->
+            choiceChanged(group, checkedId)
+        }
 
         /***
          * Spradzenie, czy użytkownik jest hostem
@@ -55,18 +67,19 @@ class EventFragment : Fragment() {
             .addValueEventListener(object: ValueEventListener{
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 val status = dataSnapshot.getValue<String>().toString()
-                binding!!.eventStatus.setText(status)
                 if (status == "host") {
                     binding!!.eventName.isEnabled = true
                     binding!!.eventDesc.isEnabled = true
                     binding!!.eventDate.isEnabled = true
                     binding!!.eventTime.isEnabled = true
+                    binding!!.radioGroup2.visibility = View.GONE
                     binding!!.deleteEvent.visibility = View.VISIBLE
                 } else {
                     binding!!.eventName.isEnabled = false
                     binding!!.eventDesc.isEnabled = false
                     binding!!.eventDate.isEnabled = false
                     binding!!.eventTime.isEnabled = false
+                    binding!!.radioGroup2.visibility = View.VISIBLE
                     binding!!.deleteEvent.visibility = View.GONE
                 }
             }
@@ -86,6 +99,23 @@ class EventFragment : Fragment() {
                     binding!!.eventDesc.setText(event!!.description)
                     binding!!.eventDate.setText(event!!.date)
                     binding!!.eventTime.setText(event!!.time)
+
+                    callback = OnMapReadyCallback { map ->
+                        val latLng = LatLng(event.latitude!!.toDouble(), event.longitude!!.toDouble())
+                        val cameraPosition = CameraPosition.Builder()
+                            .target(latLng)
+                            .zoom(15f)
+                            .build()
+                        map.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition))
+                        map.addMarker(
+                            MarkerOptions()
+                            .position(latLng)
+                        )
+                    }
+
+                    val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
+                    mapFragment?.getMapAsync(callback)
+
                 }
             }
             override fun onCancelled(databaseError: DatabaseError) {
@@ -97,7 +127,7 @@ class EventFragment : Fragment() {
         /***
          * Pobranie danych o innych uczestnikach
          */
-        val usersEvents = db.reference.child("user_events")
+        var usersEvents = db.reference.child("user_events")
         usersEvents.addValueEventListener(object: ValueEventListener{
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 for(item in dataSnapshot.children) {
@@ -117,6 +147,33 @@ class EventFragment : Fragment() {
                 Log.w("TAG", "loadPost:onCancelled", databaseError.toException())
             }
         })
+
+        /***
+         * Pobranie statusu udziału w wydarzeniu
+         */
+        usersEvents = db.reference.child("user_events")
+        usersEvents.addValueEventListener(object: ValueEventListener{
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                var choice = binding!!.radioButton3.id
+                if(dataSnapshot.child(cUser.uid).child(eventId).exists()) {
+                    val event = dataSnapshot.child(cUser.uid).child(eventId).getValue<EventElement>()
+                    when (event?.state) {
+                        "attends" -> choice = binding!!.radioButton.id
+                        "interested" -> choice = binding!!.radioButton2.id
+                    }
+                }
+                binding!!.radioGroup2.check(choice)
+
+                usersEvents.addValueEventListener(object: ValueEventListener{
+                    override fun onDataChange(dataSnapshot: DataSnapshot) {}
+                    override fun onCancelled(databaseError: DatabaseError) {}})
+            }
+            override fun onCancelled(databaseError: DatabaseError) {
+                // Getting Post failed, log a message
+                Log.w("TAG", "loadPost:onCancelled", databaseError.toException())
+            }
+        })
+
     }
 
     fun deleteEvent() {
@@ -142,6 +199,28 @@ class EventFragment : Fragment() {
             .child("events")
             .child(eventId)
             .removeValue()
+    }
+
+    fun choiceChanged(group: RadioGroup, checkedId: Int) {
+        when (checkedId) {
+            binding!!.radioButton.id ->
+                db.reference.child("user_events")
+                    .child(cUser.uid)
+                    .child(eventId)
+                    .setValue(EventElement(eventId, "attends"))
+
+            binding!!.radioButton2.id ->
+                db.reference.child("user_events")
+                    .child(cUser.uid)
+                    .child(eventId)
+                    .setValue(EventElement(eventId, "interested"))
+
+            binding!!.radioButton3.id ->
+                db.reference.child("user_events")
+                    .child(cUser.uid)
+                    .child(eventId)
+                    .removeValue()
+        }
     }
 
     companion object {
