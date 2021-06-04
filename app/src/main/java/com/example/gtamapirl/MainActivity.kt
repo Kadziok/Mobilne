@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.TextView
 import androidx.appcompat.widget.Toolbar
 import androidx.drawerlayout.widget.DrawerLayout
 import com.firebase.ui.auth.AuthUI
@@ -18,6 +19,7 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import com.example.gtamapirl.databinding.FragmentAddEventBinding
 import com.google.firebase.database.FirebaseDatabase
 
 
@@ -61,6 +63,8 @@ class MainActivity : AppCompatActivity() {
         if (requestCode == RC_SIGN_IN) {
             if (resultCode == Activity.RESULT_OK) {
                 cUser = FirebaseAuth.getInstance().currentUser!!
+                findViewById<TextView>(R.id.name).text = cUser.displayName!!
+                findViewById<TextView>(R.id.email).text = cUser.email!!
                 val db = FirebaseDatabase.getInstance().reference
                 db.child("users").child(cUser.uid).get().addOnSuccessListener {
                     when (it.value) {
