@@ -1,12 +1,9 @@
 package com.example.gtamapirl
 
-import android.R.attr.fragment
 import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.navigation.fragment.NavHostFragment.findNavController
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.gtamapirl.databinding.ItemEventBinding
 import com.firebase.ui.database.FirebaseRecyclerAdapter
