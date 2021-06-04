@@ -12,8 +12,13 @@
     <string name="account_resetPassword_msg">Password reset link sent to </string>
     <string name="addEvent_hint_name">Event name</string>
     <string name="addEvent_hint_desc">Description</string>
+
     <string name="addEvent_hint_date">Date</string>
     <string name="addEvent_datePicker_title">Select event date</string>
     <string name="addEvent_error_name_blank">Event name can\'t be blank</string>
     <string name="addEvent_error_date_empty">Date must be set</string>
+    <string name="addEvent_hint_time">Time</string>
+    <string name="addEvent_timePicker_title">Select event time</string>
+    <string name="addEvent_error_time_empty">Time must be set</string>
+
 </resources>
