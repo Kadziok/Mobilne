@@ -22,5 +22,13 @@
     <string name="addEvent_error_time_empty">Time must be set</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="event_name">Event name</string>
+    <string name="event_description">Event description</string>
+    <string name="event_date">Event date</string>
+    <string name="event_time">Event time</string>
+    <string name="will_attend">Will attend</string>
+    <string name="intersted">Interested</string>
+    <string name="not_interested">Not interested</string>
+    <string name="delete_event">Delete event</string>
 
 </resources>
