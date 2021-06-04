@@ -6,7 +6,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.example.gtamapirl.databinding.FragmentAddEventBinding
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.OnMapReadyCallback
+import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.CameraPosition
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
@@ -22,6 +30,19 @@ class AddEventFragment : Fragment() {
     private var date: LocalDate? = null
     private var time: LocalTime? = null
     private var binding: FragmentAddEventBinding? = null
+    private val args: AddEventFragmentArgs by navArgs()
+
+    private val callback = OnMapReadyCallback { map ->
+        val latLng = LatLng(args.latitude.toDouble(), args.longitude.toDouble())
+        val cameraPosition = CameraPosition.Builder()
+                .target(latLng)
+                .zoom(15f)
+                .build()
+        map.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition))
+        map.addMarker(MarkerOptions()
+                .position(latLng)
+        )
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -32,12 +53,15 @@ class AddEventFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
+        mapFragment?.getMapAsync(callback)
+
         binding = FragmentAddEventBinding.bind(view)
 
         binding!!.fab.setOnClickListener {
             addEvent()
         }
-
         binding!!.dateInput.setOnClickListener {
             setDate()
         }
@@ -49,8 +73,6 @@ class AddEventFragment : Fragment() {
             date = null
             binding!!.dateInput.setText("")
         }
-
-
         binding!!.timeInput.setOnClickListener {
             setTime()
         }
@@ -59,9 +81,10 @@ class AddEventFragment : Fragment() {
                 setTime()
         }
         binding!!.timeInputLayout.setEndIconOnClickListener {
-            date = null
-            binding!!.dateInput.setText("")
+            time = null
+            binding!!.timeInput.setText("")
         }
+
 
     }
 
@@ -78,7 +101,6 @@ class AddEventFragment : Fragment() {
         val datePickerDialog = DatePickerDialog.newInstance(dateListener, currentYear, currentMonth, currentDay)
         datePickerDialog.setTitle(getString(R.string.addEvent_datePicker_title))
         datePickerDialog.accentColor = resources.getColor(R.color.colorPrimary)
-
         datePickerDialog.show(childFragmentManager, null)
     }
 
@@ -124,6 +146,5 @@ class AddEventFragment : Fragment() {
     companion object {
         fun setLocation(location2: String) {}
     }
-
 
 }
