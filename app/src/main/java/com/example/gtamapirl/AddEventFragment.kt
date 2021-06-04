@@ -5,6 +5,7 @@ import android.text.format.Time
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -18,12 +19,18 @@ import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.FirebaseDatabase
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog
 import com.wdullaer.materialdatetimepicker.time.TimePickerDialog
+import java.time.Instant
 import java.time.LocalDate
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 import java.util.*
+import kotlin.random.Random
+import kotlin.random.Random.Default.nextInt
+
 
 class AddEventFragment : Fragment() {
 
@@ -138,7 +145,22 @@ class AddEventFragment : Fragment() {
                 binding!!.timeInputLayout.error = getString(R.string.addEvent_error_time_empty)
             }
             else -> {
-                //TODO adding event
+                val id = System.currentTimeMillis().toString() + nextInt().toString()
+                val userId = FirebaseAuth.getInstance().currentUser!!.uid
+                val newEvent = EventData(
+                    id,
+                    binding!!.textInputName.text!!.toString(),
+                    userId,
+                    date.toString(),
+                    time.toString(),
+                    args.latitude.toDouble(),
+                    args.longitude.toDouble(),
+                    binding!!.textInputDesc.text.toString()
+                )
+
+                val db = FirebaseDatabase.getInstance().reference
+                db.child("events").child(id).setValue(newEvent)
+                db.child("user_events").child(userId).child(id).setValue(EventElement(id, "host"))
             }
         }
     }
