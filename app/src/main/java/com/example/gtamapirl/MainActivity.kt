@@ -81,6 +81,11 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    fun setUserData(name: String, email: String) {
+        findViewById<TextView>(R.id.name).text = name
+        findViewById<TextView>(R.id.email).text = email
+    }
+
     companion object {
         private const val RC_SIGN_IN = 1234
     }
