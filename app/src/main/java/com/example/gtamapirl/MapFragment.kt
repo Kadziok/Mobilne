@@ -44,8 +44,8 @@ class MapFragment : Fragment() {
         getLocationPermission()
 
         map.setOnMapLongClickListener { latLng ->
-            AddEventFragment.setLocation(latLng.toString())
-            findNavController().navigate(R.id.action_setMarker)
+            val action = MapFragmentDirections.actionSetMarker(latLng.latitude.toFloat(), latLng.longitude.toFloat())
+            findNavController().navigate(action)
         }
     }
 
@@ -94,20 +94,21 @@ class MapFragment : Fragment() {
         val cameraPosition = CameraPosition.Builder()
                 .target(position)
                 .zoom(zoom)
-                .bearing(tilt)
-                .tilt(bearing)
+                .bearing(bearing)
+                .tilt(tilt)
                 .build()
         map?.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition))
     }
 
     private fun setLocation() {
         if(locationPermissionGranted && lastLocation!=null) {
-            map?.moveCamera(
-                  CameraUpdateFactory.newLatLngZoom(
-                        LatLng(lastLocation!!.latitude, lastLocation!!.longitude),
-                        DEFAULT_ZOOM.toFloat()
-                  )
-            )
+            val cameraPosition = CameraPosition.Builder()
+                .target( LatLng(lastLocation!!.latitude, lastLocation!!.longitude))
+                .zoom(DEFAULT_ZOOM.toFloat())
+                .bearing(0.0f)
+                .tilt(0.0f)
+                .build()
+            map?.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition))
         }
         else {
             getLocationPermission()
