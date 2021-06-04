@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.firebase.ui.database.FirebaseRecyclerOptions
@@ -27,7 +28,7 @@ class EventsListFragment : Fragment() {
             .setQuery(userEventsRef, EventElement::class.java)
             .build()
 
-        adapter = EventAdapter(options)
+        adapter = EventAdapter(options, this)
         adapter.startListening()
 
         val manager = LinearLayoutManager(view.context)
@@ -52,4 +53,10 @@ class EventsListFragment : Fragment() {
         super.onResume()
         adapter.startListening()
     }
+
+    fun goToEvent(id: String) {
+        val action = EventsListFragmentDirections.actionGoToEvent(id)
+        findNavController().navigate(action)
+    }
+
 }

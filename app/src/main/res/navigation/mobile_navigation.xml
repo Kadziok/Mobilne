@@ -47,6 +47,9 @@
         android:name="com.example.gtamapirl.EventsListFragment"
         android:label="@string/menu_events"
         tools:layout="@layout/fragment_events_list">
+        <action
+            android:id="@+id/action_goToEvent"
+            app:destination="@id/fragment_event" />
     </fragment>
 
     <fragment
