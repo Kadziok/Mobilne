@@ -20,7 +20,9 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.firebase.database.*
 
 
 class MapFragment : Fragment() {
@@ -29,6 +31,7 @@ class MapFragment : Fragment() {
     private var locationPermissionGranted = false
     private var lastLocation : Location? = null
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
+    private lateinit var db: FirebaseDatabase
 
     private val callback = OnMapReadyCallback { map ->
         /**
@@ -47,6 +50,45 @@ class MapFragment : Fragment() {
             val action = MapFragmentDirections.actionSetMarker(latLng.latitude.toFloat(), latLng.longitude.toFloat())
             findNavController().navigate(action)
         }
+
+        map.setOnMarkerClickListener { marker ->
+            val id = marker.title
+            val action = MapFragmentDirections.actionGoToEvent(id)
+            findNavController().navigate(action)
+            true
+        }
+
+        val eventsRef = db.reference.child("events")
+
+        eventsRef.addChildEventListener(object : ChildEventListener {
+            override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
+                val latitude = snapshot.child("latitude").value as Double
+                val longitude = snapshot.child("longitude").value as Double
+                val latLng = LatLng(latitude, longitude)
+                val id = snapshot.child("id").value as String
+                map.addMarker(
+                        MarkerOptions()
+                                .position(latLng)
+                                .title(id)
+                )
+            }
+
+            override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {
+                //TODO
+            }
+
+            override fun onChildRemoved(snapshot: DataSnapshot) {
+                //TODO
+            }
+
+            override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {
+                //TODO
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                //TODO
+            }
+        })
     }
 
     override fun onCreateView(
@@ -61,6 +103,8 @@ class MapFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this.context)
         val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
+        db = FirebaseDatabase.getInstance()
+
         mapFragment?.getMapAsync(callback)
 
         view.findViewById<FloatingActionButton>(R.id.fab).setOnClickListener{
@@ -97,7 +141,7 @@ class MapFragment : Fragment() {
                 .bearing(bearing)
                 .tilt(tilt)
                 .build()
-        map?.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition))
+        map?.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition))
     }
 
     private fun setLocation() {

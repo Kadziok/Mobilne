@@ -165,9 +165,4 @@ class AddEventFragment : Fragment() {
             }
         }
     }
-
-    companion object {
-        fun setLocation(location2: String) {}
-    }
-
 }

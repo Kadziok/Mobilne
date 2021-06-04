@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.navArgs
-import com.example.gtamapirl.databinding.FragmentAddEventBinding
 import com.example.gtamapirl.databinding.FragmentEventBinding
 
 
