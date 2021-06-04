@@ -92,7 +92,6 @@ class AddEventFragment : Fragment() {
             binding!!.timeInput.setText("")
         }
 
-
     }
 
     private fun setDate() {
