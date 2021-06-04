@@ -43,13 +43,6 @@ class AccountFragment : Fragment() {
                 Toast.LENGTH_LONG
             ).show()
         }
-        view.findViewById<Button>(R.id.test).setOnClickListener{
-            val db = FirebaseDatabase.getInstance().reference
-
-            db.child("user_events").child(cUser.uid).child("event_1").setValue(EventElement("event_1", "goes"))
-            db.child("user_events").child(cUser.uid).child("event_2").setValue(EventElement("event_2", "not"))
-            db.child("user_events").child(cUser.uid).child("event_3").setValue(EventElement("event_3", "undecided"))
-        }
     }
 
 }
