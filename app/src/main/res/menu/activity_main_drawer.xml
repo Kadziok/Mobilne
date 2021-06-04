@@ -14,7 +14,11 @@
             android:title="@string/menu_account" />
         <item
             android:id="@+id/nav_events_list"
-            android:icon="@drawable/ic_menu_account"
+            android:icon="@android:drawable/star_big_off"
             android:title="@string/menu_events" />
+        <item
+            android:id="@+id/nav_all_events_list"
+            android:icon="@android:drawable/ic_menu_mapmode"
+            android:title="@string/all_events" />
     </group>
 </menu>
