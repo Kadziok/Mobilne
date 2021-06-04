@@ -15,7 +15,7 @@
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:paddingHorizontal="10dp">
 
         <EditText
@@ -26,8 +26,7 @@
             android:layout_margin="10dp"
             android:layout_gravity="center"
             android:padding="10dp"
-            android:inputType="text"
-            android:text="Nazwa wydarzenia, ale może jednak coś dłuższego" />
+            android:inputType="text" />
         <EditText
             android:id="@+id/eventDesc"
             android:layout_width="match_parent"
@@ -36,8 +35,42 @@
             android:layout_margin="10dp"
             android:layout_gravity="center"
             android:padding="10dp"
-            android:inputType="text"
-            android:text="Nazwa wydarzenia"/>
+            android:inputType="text" />
+        <EditText
+            android:id="@+id/eventDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_margin="10dp"
+            android:layout_gravity="center"
+            android:padding="10dp"
+            android:inputType="text"/>
+        <EditText
+            android:id="@+id/eventTime"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_margin="10dp"
+            android:layout_gravity="center"
+            android:padding="10dp"
+            android:inputType="text"/>
+        <EditText
+            android:id="@+id/eventStatus"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_margin="10dp"
+            android:layout_gravity="center"
+            android:padding="10dp"
+            android:inputType="text"/>
+
+        <Button
+            android:id="@+id/deleteEvent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Delete event"
+            android:visibility="gone"/>
 
 
     </LinearLayout>
