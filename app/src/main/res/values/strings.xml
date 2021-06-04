@@ -5,10 +5,15 @@
     <string name="nav_header_desc">Navigation header</string>
     <string name="menu_home">Home</string>
     <string name="menu_account">Account</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="change_email">Change email</string>
-    <string name="reset_password">Reset password</string>
-    <string name="reset_password_msg">Password resetting link was sent to </string>
     <string name="menu_events">My events</string>
+    <string name="menu_addEvent">Add event</string>
+    <string name="account_changeEmail">Change email</string>
+    <string name="account_resetPassword">Reset password</string>
+    <string name="account_resetPassword_msg">Password reset link sent to </string>
+    <string name="addEvent_hint_name">Event name</string>
+    <string name="addEvent_hint_desc">Description</string>
+    <string name="addEvent_hint_date">Date</string>
+    <string name="addEvent_datePicker_title">Select event date</string>
+    <string name="addEvent_error_name_blank">Event name can\'t be blank</string>
+    <string name="addEvent_error_date_empty">Date must be set</string>
 </resources>

@@ -18,9 +18,9 @@
 
     <fragment
         android:id="@+id/fragment_add_event"
-        android:name="com.example.gtamapirl.AddSpecificEventFragment"
-        android:label="Dodaj nowe wydarzenie"
-        tools:layout="@layout/fragment_add_specific_event">
+        android:name="com.example.gtamapirl.AddEventFragment"
+        android:label="@string/menu_addEvent"
+        tools:layout="@layout/fragment_add_event">
         <argument
             android:name="location"
             app:argType="string"
@@ -30,14 +30,14 @@
     <fragment
         android:id="@+id/nav_account"
         android:name="com.example.gtamapirl.AccountFragment"
-        android:label="Moje konto"
+        android:label="@string/menu_account"
         tools:layout="@layout/fragment_account">
     </fragment>
 
     <fragment
         android:id="@+id/nav_events_list"
         android:name="com.example.gtamapirl.EventsListFragment"
-        android:label="Moje wydarzenia"
+        android:label="@string/menu_events"
         tools:layout="@layout/fragment_events_list">
     </fragment>
 

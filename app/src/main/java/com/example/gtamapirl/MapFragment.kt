@@ -12,7 +12,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.NavHostFragment.findNavController
 import androidx.navigation.fragment.findNavController
 import com.google.android.gms.location.*
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -43,10 +42,9 @@ class MapFragment : Fragment() {
         this.map = map
         setCamera()
         getLocationPermission()
+
         map.setOnMapLongClickListener { latLng ->
-            Log.d("Tu kliknolem:", latLng.toString())
-            val location = latLng.toString()
-            AddSpecificEventFragment.setLocation(location)
+            AddEventFragment.setLocation(latLng.toString())
             findNavController().navigate(R.id.action_setMarker)
         }
     }
@@ -75,23 +73,23 @@ class MapFragment : Fragment() {
         val sharedPref: SharedPreferences? = activity?.getPreferences(Context.MODE_PRIVATE)
         val editor = sharedPref?.edit()
 
-        if(map!=null) {
+        if(map != null) {
             editor?.putFloat(KEY_LATITUDE, map!!.cameraPosition.target.latitude.toFloat())
             editor?.putFloat(KEY_LONGITUDE, map!!.cameraPosition.target.longitude.toFloat())
             editor?.putFloat(KEY_ZOOM, map!!.cameraPosition.zoom)
             editor?.putFloat(KEY_TILT, map!!.cameraPosition.tilt)
             editor?.putFloat(KEY_BEARING, map!!.cameraPosition.bearing)
-            editor?.commit()
+            editor?.apply()
         }
     }
 
     private fun setCamera() {
         val sharedPref: SharedPreferences = activity?.getPreferences(Context.MODE_PRIVATE)!!
-        val latitude = sharedPref.getFloat(KEY_LATITUDE, map?.cameraPosition?.target?.latitude!!.toFloat())
-        val longitude = sharedPref.getFloat(KEY_LONGITUDE, map?.cameraPosition?.target?.longitude!!.toFloat())
-        val zoom = sharedPref.getFloat(KEY_ZOOM, map?.cameraPosition?.zoom!!.toFloat())
-        val tilt = sharedPref.getFloat(KEY_TILT, map?.cameraPosition?.zoom!!.toFloat())
-        val bearing = sharedPref.getFloat(KEY_BEARING, map?.cameraPosition?.zoom!!.toFloat())
+        val latitude = sharedPref.getFloat(KEY_LATITUDE, map!!.cameraPosition.target.latitude.toFloat())
+        val longitude = sharedPref.getFloat(KEY_LONGITUDE, map!!.cameraPosition.target.longitude.toFloat())
+        val zoom = sharedPref.getFloat(KEY_ZOOM, map!!.cameraPosition.zoom)
+        val tilt = sharedPref.getFloat(KEY_TILT, map!!.cameraPosition.zoom)
+        val bearing = sharedPref.getFloat(KEY_BEARING, map!!.cameraPosition.zoom)
         val position = LatLng(latitude.toDouble(), longitude.toDouble())
         val cameraPosition = CameraPosition.Builder()
                 .target(position)
@@ -102,7 +100,7 @@ class MapFragment : Fragment() {
         map?.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition))
     }
 
-    fun setLocation() {
+    private fun setLocation() {
         if(locationPermissionGranted && lastLocation!=null) {
             map?.moveCamera(
                   CameraUpdateFactory.newLatLngZoom(
