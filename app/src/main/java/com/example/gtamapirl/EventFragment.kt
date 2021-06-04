@@ -9,6 +9,12 @@ import android.view.ViewGroup
 import android.widget.RadioGroup
 import androidx.navigation.fragment.navArgs
 import com.example.gtamapirl.databinding.FragmentEventBinding
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.OnMapReadyCallback
+import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.CameraPosition
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MarkerOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.DataSnapshot
@@ -27,6 +33,7 @@ class EventFragment : Fragment() {
     private lateinit var eventId: String
     private lateinit var db: FirebaseDatabase
     private lateinit var cUser: FirebaseUser
+    private lateinit var callback: OnMapReadyCallback
 
 
     override fun onCreateView(
@@ -91,6 +98,23 @@ class EventFragment : Fragment() {
                     binding!!.eventDesc.setText(event!!.description)
                     binding!!.eventDate.setText(event!!.date)
                     binding!!.eventTime.setText(event!!.time)
+
+                    callback = OnMapReadyCallback { map ->
+                        val latLng = LatLng(event.latitude!!.toDouble(), event.longitude!!.toDouble())
+                        val cameraPosition = CameraPosition.Builder()
+                            .target(latLng)
+                            .zoom(15f)
+                            .build()
+                        map.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition))
+                        map.addMarker(
+                            MarkerOptions()
+                            .position(latLng)
+                        )
+                    }
+
+                    val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
+                    mapFragment?.getMapAsync(callback)
+
                 }
             }
             override fun onCancelled(databaseError: DatabaseError) {
