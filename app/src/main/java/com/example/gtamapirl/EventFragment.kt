@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.fragment.findNavController
 import android.widget.RadioGroup
 import android.widget.Toast
 import androidx.navigation.fragment.navArgs
@@ -51,7 +52,10 @@ class EventFragment : Fragment() {
         cUser = FirebaseAuth.getInstance().currentUser!!
         db = Firebase.database
 
-        binding!!.deleteEvent.setOnClickListener { deleteEvent() }
+        binding!!.deleteEvent.setOnClickListener {
+            deleteEvent()
+            findNavController().popBackStack()
+        }
         binding!!.radioGroup2.setOnCheckedChangeListener { group, checkedId ->
             choiceChanged(group, checkedId)
         }
@@ -95,10 +99,10 @@ class EventFragment : Fragment() {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 val event = dataSnapshot.getValue<EventData>()
                 if (event?.id != null) {
-                    binding!!.eventName.setText(event!!.name)
-                    binding!!.eventDesc.setText(event!!.description)
-                    binding!!.eventDate.setText(event!!.date)
-                    binding!!.eventTime.setText(event!!.time)
+                    binding!!.eventName.setText(event.name)
+                    binding!!.eventDesc.setText(event.description)
+                    binding!!.eventDate.setText(event.date)
+                    binding!!.eventTime.setText(event.time)
 
                     callback = OnMapReadyCallback { map ->
                         val latLng = LatLng(event.latitude!!.toDouble(), event.longitude!!.toDouble())

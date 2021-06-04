@@ -20,6 +20,7 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.database.*
@@ -32,6 +33,7 @@ class MapFragment : Fragment() {
     private var lastLocation : Location? = null
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
     private lateinit var db: FirebaseDatabase
+    private var markerList: ArrayList<Marker> = ArrayList()
 
     private val callback = OnMapReadyCallback { map ->
         /**
@@ -66,19 +68,23 @@ class MapFragment : Fragment() {
                 val longitude = snapshot.child("longitude").value as Double
                 val latLng = LatLng(latitude, longitude)
                 val id = snapshot.child("id").value as String
-                map.addMarker(
-                        MarkerOptions()
-                                .position(latLng)
-                                .title(id)
+                val marker = map.addMarker(MarkerOptions()
+                        .position(latLng)
+                        .title(id)
                 )
+                markerList.add(marker)
             }
 
             override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {
-                //TODO
+
             }
 
             override fun onChildRemoved(snapshot: DataSnapshot) {
-                //TODO
+                val id = snapshot.child("id").value as String
+                for(marker in markerList) {
+                    if(marker.title == id)
+                        marker.remove()
+                }
             }
 
             override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {

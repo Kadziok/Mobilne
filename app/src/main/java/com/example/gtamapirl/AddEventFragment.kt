@@ -161,6 +161,7 @@ class AddEventFragment : Fragment() {
                 db.child("events").child(id).setValue(newEvent)
                 db.child("user_events").child(userId).child(id).setValue(EventElement(id, "host"))
                 val action = AddEventFragmentDirections.actionGoToEvent(id)
+                findNavController().popBackStack()
                 findNavController().navigate(action)
             }
         }
