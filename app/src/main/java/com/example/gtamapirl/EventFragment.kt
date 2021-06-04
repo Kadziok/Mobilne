@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.RadioGroup
+import android.widget.Toast
 import androidx.navigation.fragment.navArgs
 import com.example.gtamapirl.databinding.FragmentEventBinding
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -126,7 +127,7 @@ class EventFragment : Fragment() {
         /***
          * Pobranie danych o innych uczestnikach
          */
-        val usersEvents = db.reference.child("user_events")
+        var usersEvents = db.reference.child("user_events")
         usersEvents.addValueEventListener(object: ValueEventListener{
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 for(item in dataSnapshot.children) {
@@ -150,11 +151,12 @@ class EventFragment : Fragment() {
         /***
          * Pobranie statusu udziału w wydarzeniu
          */
+        usersEvents = db.reference.child("user_events")
         usersEvents.addValueEventListener(object: ValueEventListener{
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 var choice = binding!!.radioButton3.id
-                if(dataSnapshot.child(eventId).exists()) {
-                    val event = dataSnapshot.getValue<EventElement>()
+                if(dataSnapshot.child(cUser.uid).child(eventId).exists()) {
+                    val event = dataSnapshot.child(cUser.uid).child(eventId).getValue<EventElement>()
                     when (event?.state) {
                         "attends" -> choice = binding!!.radioButton.id
                         "interested" -> choice = binding!!.radioButton2.id
@@ -200,7 +202,6 @@ class EventFragment : Fragment() {
     }
 
     fun choiceChanged(group: RadioGroup, checkedId: Int) {
-        group.check(checkedId)
         when (checkedId) {
             binding!!.radioButton.id ->
                 db.reference.child("user_events")
