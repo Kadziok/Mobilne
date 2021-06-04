@@ -20,5 +20,7 @@
     <string name="addEvent_hint_time">Time</string>
     <string name="addEvent_timePicker_title">Select event time</string>
     <string name="addEvent_error_time_empty">Time must be set</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

@@ -21,6 +21,7 @@
         android:name="com.example.gtamapirl.AddEventFragment"
         android:label="@string/menu_addEvent"
         tools:layout="@layout/fragment_add_event">
+
         <argument
             android:name="latitude"
             app:argType="float"
@@ -29,6 +30,9 @@
             android:name="longitude"
             app:argType="float"
             android:defaultValue="0" />
+        <action
+            android:id="@+id/action_goToEvent"
+            app:destination="@id/fragment_event" />
     </fragment>
 
     <fragment
@@ -43,6 +47,17 @@
         android:name="com.example.gtamapirl.EventsListFragment"
         android:label="@string/menu_events"
         tools:layout="@layout/fragment_events_list">
+    </fragment>
+
+    <fragment
+        android:id="@+id/fragment_event"
+        android:name="com.example.gtamapirl.EventFragment"
+        android:label="Event..."
+        tools:layout="@layout/fragment_event">
+        <argument
+            android:name="idEvent"
+            app:argType="string"
+            android:defaultValue="empty" />
     </fragment>
 
 </navigation>

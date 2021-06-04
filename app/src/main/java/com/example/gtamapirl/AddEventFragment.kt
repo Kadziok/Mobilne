@@ -101,7 +101,7 @@ class AddEventFragment : Fragment() {
         val currentMonth: Int = now.get(Calendar.MONTH)
         val currentDay: Int = now.get(Calendar.DAY_OF_MONTH)
         val dateListener = DatePickerDialog.OnDateSetListener { _, year, monthOfYear, dayOfMonth ->
-            date = LocalDate.of(year, monthOfYear, dayOfMonth)
+            date = LocalDate.of(year, monthOfYear + 1, dayOfMonth)
             binding!!.dateInput.setText(date?.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")))
             binding!!.dateInputLayout.isErrorEnabled = false
         }
@@ -161,6 +161,8 @@ class AddEventFragment : Fragment() {
                 val db = FirebaseDatabase.getInstance().reference
                 db.child("events").child(id).setValue(newEvent)
                 db.child("user_events").child(userId).child(id).setValue(EventElement(id, "host"))
+                val action = AddEventFragmentDirections.actionGoToEvent(id)
+                findNavController().navigate(action)
             }
         }
     }
