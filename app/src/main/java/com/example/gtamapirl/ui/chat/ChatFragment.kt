@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.ProgressBar
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.gtamapirl.MainActivity
 import com.example.gtamapirl.R
 import com.example.gtamapirl.data.MessageData
 import com.example.gtamapirl.databinding.FragmentChatBinding
@@ -38,6 +39,22 @@ class ChatFragment : Fragment() {
         val db = Firebase.database
 
         val id = args.idChat
+
+        db.reference.child("chats").child(id).child("user1").get().addOnSuccessListener { it ->
+            if (cUser.uid == it.value.toString()) {
+                db.reference.child("chats").child(id).child("user2").get().addOnSuccessListener { it2 ->
+                    db.reference.child("users").child(it2.value.toString()).child("name").get().addOnSuccessListener { it3 ->
+                        (activity as MainActivity).updateTitle(it3.value.toString())
+                    }
+                }
+            } else {
+                db.reference.child("users").child(it.value.toString()).child("name").get().addOnSuccessListener { it4 ->
+                    (activity as MainActivity).updateTitle(it4.value.toString())
+                }
+            }
+        }
+
+
         val messagesRef = db.reference.child("chats").child(id).child("messages")
         val options = FirebaseRecyclerOptions.Builder<MessageData>()
             .setQuery(messagesRef, MessageData::class.java)
