@@ -150,7 +150,8 @@ class AddEventFragment : Fragment() {
                     time.toString(),
                     args.latitude.toDouble(),
                     args.longitude.toDouble(),
-                    binding!!.textInputDesc.text.toString()
+                    binding!!.textInputDesc.text.toString(),
+                    1
                 )
 
                 val db = FirebaseDatabase.getInstance().reference

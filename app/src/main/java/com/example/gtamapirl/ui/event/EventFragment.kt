@@ -27,10 +27,7 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.*
 import com.google.firebase.database.ktx.database
 import com.google.firebase.database.ktx.getValue
 import com.google.firebase.ktx.Firebase
@@ -99,6 +96,7 @@ class EventFragment : Fragment() {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 val status = dataSnapshot.getValue<String>().toString()
                 if (status == "host") {
+                    // tutaj widok dla hosta
                     binding!!.eventDesc.isEnabled = true
                     binding!!.eventDate.isEnabled = true
                     binding!!.eventTime.isEnabled = true
@@ -130,6 +128,7 @@ class EventFragment : Fragment() {
                             setTime()
                     }
                 } else {
+                    // tu widok dla innych
                     binding!!.eventDesc.isEnabled = false
                     binding!!.eventDate.isEnabled = false
                     binding!!.eventTime.isEnabled = false
@@ -295,42 +294,65 @@ class EventFragment : Fragment() {
 
     private fun saveChanges() {
         binding!!.dateInputLayout.isErrorEnabled = false
-        val userId = FirebaseAuth.getInstance().currentUser!!.uid
-        val newEvent = EventData(
-            eventId,
-            eventName!!,
-            userId,
-            binding!!.eventDate.text.toString(),
-            binding!!.eventTime.text.toString(),
-            latLng.latitude,
-            latLng.longitude,
-            binding!!.eventDesc.text.toString()
-        )
 
+        val userId = FirebaseAuth.getInstance().currentUser!!.uid
         val db = FirebaseDatabase.getInstance().reference
-        db.child("events").child(eventId).setValue(newEvent)
+
+        db.child("events")
+            .child(eventId)
+            .child("participants").get().addOnSuccessListener {
+
+                val newEvent = EventData(
+                    eventId,
+                    eventName!!,
+                    userId,
+                    binding!!.eventDate.text.toString(),
+                    binding!!.eventTime.text.toString(),
+                    latLng.latitude,
+                    latLng.longitude,
+                    binding!!.eventDesc.text.toString(),
+                    it.value as Int
+                )
+
+                db.child("events").child(eventId).setValue(newEvent)
+            }
     }
 
     private fun choiceChanged(group: RadioGroup, checkedId: Int) {
         if (statusSet) {
             when (checkedId) {
-                binding!!.radioButton.id ->
+                binding!!.radioButton.id -> {
                     db.reference.child("user_events")
                         .child(cUser.uid)
                         .child(eventId)
                         .setValue(UserEventData(eventId, "attends"))
+                    db.reference.child("events")
+                        .child(eventId)
+                        .child("participants")
+                        .setValue(ServerValue.increment(1))
+                }
 
-                binding!!.radioButton2.id ->
+                binding!!.radioButton2.id -> {
                     db.reference.child("user_events")
                         .child(cUser.uid)
                         .child(eventId)
                         .setValue(UserEventData(eventId, "interested"))
+                    db.reference.child("events")
+                        .child(eventId)
+                        .child("participants")
+                        .setValue(ServerValue.increment(1))
+                }
 
-                binding!!.radioButton3.id ->
+                binding!!.radioButton3.id -> {
                     db.reference.child("user_events")
                         .child(cUser.uid)
                         .child(eventId)
                         .removeValue()
+                    db.reference.child("events")
+                        .child(eventId)
+                        .child("participants")
+                        .setValue(ServerValue.increment(-1))
+                }
             }
         }
     }
