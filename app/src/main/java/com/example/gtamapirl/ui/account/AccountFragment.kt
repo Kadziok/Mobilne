@@ -10,7 +10,6 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.gtamapirl.MainActivity
 import com.example.gtamapirl.R
-import com.example.gtamapirl.account.AccountFragmentDirections
 import com.example.gtamapirl.databinding.FragmentAccountBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -125,6 +124,7 @@ class AccountFragment : Fragment() {
         binding!!.logout.setOnClickListener{
             FirebaseAuth.getInstance().signOut()
             val action = AccountFragmentDirections.actionToHome()
+            findNavController().popBackStack()
             findNavController().navigate(action)
             (context as MainActivity).login()
         }

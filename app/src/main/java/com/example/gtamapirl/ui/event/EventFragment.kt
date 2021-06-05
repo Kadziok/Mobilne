@@ -14,7 +14,6 @@ import com.example.gtamapirl.R
 import com.example.gtamapirl.data.EventData
 import com.example.gtamapirl.data.UserEventData
 import com.example.gtamapirl.databinding.FragmentEventBinding
-import com.example.gtamapirl.event.EventFragmentArgs
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment

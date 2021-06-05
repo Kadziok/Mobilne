@@ -13,7 +13,6 @@ import android.view.ViewGroup
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import com.example.gtamapirl.map.MapFragmentDirections
 import com.example.gtamapirl.R
 import com.google.android.gms.location.*
 import com.google.android.gms.maps.CameraUpdateFactory

@@ -7,9 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.example.gtamapirl.*
-import com.example.gtamapirl.add_event.AddEventFragmentArgs
-import com.example.gtamapirl.add_event.AddEventFragmentDirections
+import com.example.gtamapirl.R
 import com.example.gtamapirl.data.EventData
 import com.example.gtamapirl.data.UserEventData
 import com.example.gtamapirl.databinding.FragmentAddEventBinding

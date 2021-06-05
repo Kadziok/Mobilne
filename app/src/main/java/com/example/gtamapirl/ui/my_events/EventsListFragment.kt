@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.gtamapirl.my_events.EventsListFragmentDirections
 import com.example.gtamapirl.R
 import com.example.gtamapirl.data.UserEventData
 import com.firebase.ui.database.FirebaseRecyclerOptions
