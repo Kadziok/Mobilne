@@ -1,4 +1,4 @@
-package com.example.gtamapirl.event
+package com.example.gtamapirl.ui.event
 
 import android.os.Bundle
 import android.util.Log
@@ -13,9 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.SnapHelper
 import com.example.gtamapirl.MainActivity
-import com.example.gtamapirl.event.EventFragment
 import com.example.gtamapirl.R
-import com.example.gtamapirl.add_event.AddEventFragmentDirections
 import com.example.gtamapirl.data.EventData
 import com.example.gtamapirl.data.ParticipantData
 import com.example.gtamapirl.data.UserEventData
@@ -41,8 +39,11 @@ import java.time.LocalDate
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 import java.util.*
+<<<<<<< HEAD:app/src/main/java/com/example/gtamapirl/event/EventFragment.kt
 import kotlin.collections.ArrayList
 import kotlin.random.Random
+=======
+>>>>>>> origin/main:app/src/main/java/com/example/gtamapirl/ui/event/EventFragment.kt
 
 
 class EventFragment : Fragment() {

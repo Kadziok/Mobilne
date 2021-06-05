@@ -1,4 +1,4 @@
-package com.example.gtamapirl.add_event
+package com.example.gtamapirl.ui.add_event
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.example.gtamapirl.*
+import com.example.gtamapirl.R
 import com.example.gtamapirl.data.EventData
 import com.example.gtamapirl.data.UserEventData
 import com.example.gtamapirl.databinding.FragmentAddEventBinding

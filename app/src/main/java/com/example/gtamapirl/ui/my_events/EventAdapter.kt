@@ -1,4 +1,4 @@
-package com.example.gtamapirl.my_events
+package com.example.gtamapirl.ui.my_events
 
 import android.content.Context
 import android.util.Log

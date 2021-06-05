@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/nav_home"
-        android:name="com.example.gtamapirl.map.MapFragment"
+        android:name="com.example.gtamapirl.ui.map.MapFragment"
         android:label="@string/menu_home"
         tools:layout="@layout/fragment_map">
 
@@ -22,7 +22,7 @@
 
     <fragment
         android:id="@+id/fragment_add_event"
-        android:name="com.example.gtamapirl.add_event.AddEventFragment"
+        android:name="com.example.gtamapirl.ui.add_event.AddEventFragment"
         android:label="@string/menu_addEvent"
         tools:layout="@layout/fragment_add_event">
 
@@ -41,7 +41,7 @@
 
     <fragment
         android:id="@+id/nav_account"
-        android:name="com.example.gtamapirl.account.AccountFragment"
+        android:name="com.example.gtamapirl.ui.account.AccountFragment"
         android:label="@string/menu_account"
         tools:layout="@layout/fragment_account">
         <action
@@ -51,7 +51,7 @@
 
     <fragment
         android:id="@+id/nav_events_list"
-        android:name="com.example.gtamapirl.my_events.EventsListFragment"
+        android:name="com.example.gtamapirl.ui.my_events.EventsListFragment"
         android:label="@string/menu_events"
         tools:layout="@layout/fragment_events_list">
         <action
@@ -61,7 +61,7 @@
 
     <fragment
         android:id="@+id/nav_all_events_list"
-        android:name="com.example.gtamapirl.all_events.AllEventsListFragment"
+        android:name="com.example.gtamapirl.ui.all_events.AllEventsListFragment"
         android:label="@string/all_events"
         tools:layout="@layout/fragment_all_events_list">
         <action
@@ -71,7 +71,7 @@
 
     <fragment
         android:id="@+id/fragment_event"
-        android:name="com.example.gtamapirl.event.EventFragment"
+        android:name="com.example.gtamapirl.ui.event.EventFragment"
         android:label="Event..."
         tools:layout="@layout/fragment_event">
         <argument
