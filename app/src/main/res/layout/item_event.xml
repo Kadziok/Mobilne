@@ -4,8 +4,9 @@
     android:id="@+id/eventLay"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="4dp"
-    android:elevation="4dp" >
+    android:layout_margin="8dp"
+    android:elevation="18dp"
+    android:backgroundTint="#E8B6F6">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
