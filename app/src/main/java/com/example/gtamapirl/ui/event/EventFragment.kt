@@ -83,8 +83,8 @@ class EventFragment : Fragment() {
             false
         )
         recycler.adapter = ParticipantsAdapter(participants)
-        val helper: SnapHelper = LinearSnapHelper()
-        helper.attachToRecyclerView(recycler)
+        //val helper: SnapHelper = LinearSnapHelper()
+        //helper.attachToRecyclerView(recycler)
 
 
         /***

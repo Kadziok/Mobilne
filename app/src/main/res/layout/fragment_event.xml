@@ -131,10 +131,18 @@
             android:layout_margin="10dp"
             android:text="@string/participants"/>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/participantsRecycler"
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="400dp">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/participantsRecycler"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+        </FrameLayout>
+
+
 
 
     </LinearLayout>
