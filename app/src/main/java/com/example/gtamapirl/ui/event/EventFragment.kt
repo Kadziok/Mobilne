@@ -96,73 +96,101 @@ class EventFragment : Fragment() {
          * Spradzenie, czy użytkownik jest hostem
          * i może edytować wydarzenie
          */
-        db.reference.child("user_events")
-            .child(cUser.uid)
-            .child(eventId)
-            .child("state")
-            .addValueEventListener(object: ValueEventListener{
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                val status = dataSnapshot.getValue<String>().toString()
-                if (status == "host") {
-                    binding!!.eventDesc.isEnabled = true
-                    binding!!.eventDate.isEnabled = true
-                    binding!!.eventTime.isEnabled = true
-                    binding!!.radioGroup2.visibility = View.GONE
-                    binding!!.deleteEvent.visibility = View.VISIBLE
-                    binding!!.markers.visibility = View.VISIBLE
-                    binding!!.saveChanges.visibility = View.VISIBLE
-
-                    setMarkerImage(binding!!.marker0, "0", R.drawable.marker0)
-                    setMarkerImage(binding!!.marker1, "1", R.drawable.marker1)
-                    setMarkerImage(binding!!.marker2, "2", R.drawable.marker2)
-                    setMarkerImage(binding!!.marker3, "3", R.drawable.marker3)
-
-                    binding!!.deleteEvent.setOnClickListener {
-                        deleteEvent()
-                        findNavController().popBackStack()
-                    }
-                    binding!!.saveChanges.setOnClickListener {
-                        saveChanges()
-                        findNavController().popBackStack()
-                    }
-
-                    binding!!.eventDate.setOnClickListener {
-                        setDate()
-                    }
-                    binding!!.eventDate.setOnFocusChangeListener { _: View, focused: Boolean ->
-                        if(focused)
-                            setDate()
-                    }
-                    binding!!.eventTime.setOnClickListener {
-                        setTime()
-                    }
-                    binding!!.eventTime.setOnFocusChangeListener { _: View, focused: Boolean ->
-                        if(focused)
-                            setTime()
-                    }
-                } else {
-                    binding!!.eventDesc.isEnabled = false
-                    binding!!.eventDate.isEnabled = false
-                    binding!!.eventTime.isEnabled = false
-                    binding!!.radioGroup2.visibility = View.VISIBLE
-                    binding!!.deleteEvent.visibility = View.GONE
-                    binding!!.markers.visibility = View.GONE
-                    binding!!.saveChanges.visibility = View.GONE
-
-                    binding!!.radioGroup2.setOnCheckedChangeListener { group, checkedId ->
-                        choiceChanged(group, checkedId)
-                    }
-                }
-            }
-            override fun onCancelled(databaseError: DatabaseError) {
-                Log.w("TAG", "loadPost:onCancelled", databaseError.toException())
-            }
-        })
+        setWidgets()
 
 
         /***
          * Pobranie danych wydarzenia
          */
+        getEventData()
+
+
+        /***
+         * Pobranie danych o innych uczestnikach
+         */
+        getParticipantsData()
+
+
+        /***
+         * Pobranie statusu udziału w wydarzeniu
+         */
+        getStatus()
+
+
+    }
+
+    private fun getStatus() {
+        val usersEvents = db.reference.child("user_events")
+        usersEvents.addValueEventListener(object: ValueEventListener{
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                if (!statusSet) {
+                    var choice = binding!!.radioButton3.id
+                    if (dataSnapshot.child(cUser.uid).child(eventId).exists()) {
+                        val event =
+                            dataSnapshot.child(cUser.uid).child(eventId).getValue<UserEventData>()
+                        when (event?.state) {
+                            "attends" -> choice = binding!!.radioButton.id
+                            "interested" -> choice = binding!!.radioButton2.id
+                        }
+                    }
+                    binding!!.radioGroup2.check(choice)
+
+                    statusSet = true
+                }
+            }
+            override fun onCancelled(databaseError: DatabaseError) {
+                // Getting Post failed, log a message
+                Log.w("TAG", "loadPost:onCancelled", databaseError.toException())
+            }
+        })
+    }
+
+    private fun getParticipantsData() {
+        val usersEvents = db.reference.child("user_events")
+        usersEvents.addValueEventListener(object: ValueEventListener{
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                if (!recyclerSet) {
+                    for (item in dataSnapshot.children) {
+                        if (item.child(eventId).exists()) {
+                            val userEventData = item.child(eventId).getValue<UserEventData>()
+                            db.reference
+                                .child("users")
+                                .child(item.key.toString())
+                                .child("name")
+                                .get().addOnSuccessListener { it ->
+                                    val username = it.value.toString()
+                                    db.reference
+                                        .child("users")
+                                        .child(item.key.toString())
+                                        .child("icon")
+                                        .get().addOnSuccessListener { it2 ->
+                                            val icon = it2.value.toString()
+                                            participants.add(
+                                                ParticipantData(
+                                                    item.key.toString(),
+                                                    username,
+                                                    userEventData?.state!!,
+                                                    icon
+                                                )
+                                            )
+                                            binding!!.participantsRecycler.adapter?.notifyDataSetChanged()
+                                        }
+                                }
+                        }
+                    }
+
+                    recyclerSet = true
+                }
+
+            }
+            override fun onCancelled(databaseError: DatabaseError) {
+                // Getting Post failed, log a message
+                Log.w("TAG", "loadPost:onCancelled", databaseError.toException())
+            }
+        })
+    }
+
+    private fun getEventData() {
         db.reference.child("events").child(eventId).addValueEventListener(object: ValueEventListener{
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 if (!dataSet) {
@@ -211,80 +239,71 @@ class EventFragment : Fragment() {
                 Log.w("TAG", "loadPost:onCancelled", databaseError.toException())
             }
         })
+    }
 
-        /***
-         * Pobranie danych o innych uczestnikach
-         */
-        var usersEvents = db.reference.child("user_events")
-        usersEvents.addValueEventListener(object: ValueEventListener{
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                if (!recyclerSet) {
-                    for (item in dataSnapshot.children) {
-                        if (item.child(eventId).exists()) {
-                            val userEventData = item.child(eventId).getValue<UserEventData>()
-                            db.reference
-                                .child("users")
-                                .child(item.key.toString())
-                                .child("name")
-                                .get().addOnSuccessListener { it ->
-                                        val username = it.value.toString()
-                                        db.reference
-                                                .child("users")
-                                                .child(item.key.toString())
-                                                .child("icon")
-                                                .get().addOnSuccessListener { it2 ->
-                                                    val icon = it2.value.toString()
-                                                    participants.add(
-                                                            ParticipantData(
-                                                    item.key.toString(),
-                                                    username,
-                                                    userEventData?.state!!,
-                                                    icon
-                                            )
-                                        )
-                                        binding!!.participantsRecycler.adapter?.notifyDataSetChanged()
-                                    }
-                                }
+    private fun setWidgets() {
+        db.reference.child("user_events")
+            .child(cUser.uid)
+            .child(eventId)
+            .child("state")
+            .addValueEventListener(object: ValueEventListener{
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    val status = dataSnapshot.getValue<String>().toString()
+                    if (status == "host") {
+                        binding!!.eventDesc.isEnabled = true
+                        binding!!.eventDate.isEnabled = true
+                        binding!!.eventTime.isEnabled = true
+                        binding!!.radioGroup2.visibility = View.GONE
+                        binding!!.deleteEvent.visibility = View.VISIBLE
+                        binding!!.markers.visibility = View.VISIBLE
+                        binding!!.saveChanges.visibility = View.VISIBLE
+
+                        setMarkerImage(binding!!.marker0, "0", R.drawable.marker0)
+                        setMarkerImage(binding!!.marker1, "1", R.drawable.marker1)
+                        setMarkerImage(binding!!.marker2, "2", R.drawable.marker2)
+                        setMarkerImage(binding!!.marker3, "3", R.drawable.marker3)
+
+                        binding!!.deleteEvent.setOnClickListener {
+                            deleteEvent()
+                            findNavController().popBackStack()
+                        }
+                        binding!!.saveChanges.setOnClickListener {
+                            saveChanges()
+                            findNavController().popBackStack()
+                        }
+
+                        binding!!.eventDate.setOnClickListener {
+                            setDate()
+                        }
+                        binding!!.eventDate.setOnFocusChangeListener { _: View, focused: Boolean ->
+                            if(focused)
+                                setDate()
+                        }
+                        binding!!.eventTime.setOnClickListener {
+                            setTime()
+                        }
+                        binding!!.eventTime.setOnFocusChangeListener { _: View, focused: Boolean ->
+                            if(focused)
+                                setTime()
+                        }
+                    } else {
+                        binding!!.eventDesc.isEnabled = false
+                        binding!!.eventDate.isEnabled = false
+                        binding!!.eventTime.isEnabled = false
+                        binding!!.radioGroup2.visibility = View.VISIBLE
+                        binding!!.deleteEvent.visibility = View.GONE
+                        binding!!.markers.visibility = View.GONE
+                        binding!!.saveChanges.visibility = View.GONE
+
+                        binding!!.radioGroup2.setOnCheckedChangeListener { group, checkedId ->
+                            choiceChanged(group, checkedId)
                         }
                     }
-
-                    recyclerSet = true
                 }
-
-            }
-            override fun onCancelled(databaseError: DatabaseError) {
-                // Getting Post failed, log a message
-                Log.w("TAG", "loadPost:onCancelled", databaseError.toException())
-            }
-        })
-
-        /***
-         * Pobranie statusu udziału w wydarzeniu
-         */
-        usersEvents = db.reference.child("user_events")
-        usersEvents.addValueEventListener(object: ValueEventListener{
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                if (!statusSet) {
-                    var choice = binding!!.radioButton3.id
-                    if (dataSnapshot.child(cUser.uid).child(eventId).exists()) {
-                        val event =
-                            dataSnapshot.child(cUser.uid).child(eventId).getValue<UserEventData>()
-                        when (event?.state) {
-                            "attends" -> choice = binding!!.radioButton.id
-                            "interested" -> choice = binding!!.radioButton2.id
-                        }
-                    }
-                    binding!!.radioGroup2.check(choice)
-
-                    statusSet = true
+                override fun onCancelled(databaseError: DatabaseError) {
+                    Log.w("TAG", "loadPost:onCancelled", databaseError.toException())
                 }
-            }
-            override fun onCancelled(databaseError: DatabaseError) {
-                // Getting Post failed, log a message
-                Log.w("TAG", "loadPost:onCancelled", databaseError.toException())
-            }
-        })
-
+            })
     }
 
     private fun loadMarkerIcon(res: Int): BitmapDescriptor {
