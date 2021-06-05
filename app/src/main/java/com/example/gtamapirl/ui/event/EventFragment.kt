@@ -8,17 +8,20 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import android.widget.RadioGroup
+import android.widget.Toast
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.SnapHelper
 import com.example.gtamapirl.MainActivity
 import com.example.gtamapirl.R
+import com.example.gtamapirl.data.ChatData
 import com.example.gtamapirl.data.EventData
 import com.example.gtamapirl.data.ParticipantData
 import com.example.gtamapirl.data.UserEventData
 import com.example.gtamapirl.databinding.FragmentEventBinding
 import com.example.gtamapirl.event.ParticipantsAdapter
+import com.example.gtamapirl.ui.add_event.AddEventFragmentDirections
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
@@ -33,6 +36,8 @@ import com.google.firebase.database.ktx.getValue
 import com.google.firebase.ktx.Firebase
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog
 import com.wdullaer.materialdatetimepicker.time.TimePickerDialog
+import java.math.BigInteger
+import java.security.MessageDigest
 import java.time.LocalDate
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
@@ -79,7 +84,7 @@ class EventFragment : Fragment() {
             LinearLayoutManager.VERTICAL,
             false
         )
-        recycler.adapter = ParticipantsAdapter(participants)
+        recycler.adapter = ParticipantsAdapter(participants, this)
         //val helper: SnapHelper = LinearSnapHelper()
         //helper.attachToRecyclerView(recycler)
 
@@ -390,6 +395,58 @@ class EventFragment : Fragment() {
         timePickerDialog.accentColor = resources.getColor(R.color.colorPrimary)
 
         timePickerDialog.show(childFragmentManager, null)
+    }
+
+
+    fun createChat(id: String) {
+        var chatId = ""
+        if (cUser.uid < id) {
+            chatId = md5(cUser.uid+id)
+        } else {
+            chatId = md5(id+cUser.uid)
+        }
+
+        var userChats = db.reference.child("users").child(cUser.uid).child("chats")
+        userChats.addValueEventListener(object: ValueEventListener{
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                if(!dataSnapshot.child(chatId).exists()){
+                    val chat = ChatData(
+                        chatId,
+                        System.currentTimeMillis(),
+                        id,
+                        cUser.uid
+                    )
+                    db.reference
+                        .child("users")
+                        .child(cUser.uid)
+                        .child("chats")
+                        .child(chatId)
+                        .setValue(chat)
+                    db.reference
+                        .child("users")
+                        .child(id)
+                        .child("chats")
+                        .child(chatId)
+                        .setValue(chat)
+                    db.reference
+                        .child("chats")
+                        .child(chatId)
+                        .setValue(chat)
+                }
+
+
+            }
+            override fun onCancelled(databaseError: DatabaseError) {
+                // Getting Post failed, log a message
+                Log.w("TAG", "loadPost:onCancelled", databaseError.toException())
+            }
+        })
+
+    }
+
+    fun md5(input:String): String {
+        val md = MessageDigest.getInstance("MD5")
+        return BigInteger(1, md.digest(input.toByteArray())).toString(16).padStart(32, '0')
     }
 
     companion object {
