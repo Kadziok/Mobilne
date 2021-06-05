@@ -1,4 +1,4 @@
-package com.example.gtamapirl.all_events
+package com.example.gtamapirl.ui.all_events
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment

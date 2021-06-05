@@ -1,4 +1,4 @@
-package com.example.gtamapirl.map
+package com.example.gtamapirl.ui.map
 
 import android.Manifest
 import android.content.Context

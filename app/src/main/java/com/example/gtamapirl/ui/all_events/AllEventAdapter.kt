@@ -1,4 +1,4 @@
-package com.example.gtamapirl.all_events
+package com.example.gtamapirl.ui.all_events
 
 import android.content.Context
 import android.view.LayoutInflater

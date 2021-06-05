@@ -1,4 +1,4 @@
-package com.example.gtamapirl.account
+package com.example.gtamapirl.ui.account
 
 import android.app.AlertDialog
 import android.os.Bundle
@@ -10,8 +10,8 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.gtamapirl.MainActivity
 import com.example.gtamapirl.R
+import com.example.gtamapirl.account.AccountFragmentDirections
 import com.example.gtamapirl.databinding.FragmentAccountBinding
-import com.example.gtamapirl.map.MapFragmentDirections
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.UserProfileChangeRequest
