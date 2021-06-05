@@ -17,6 +17,26 @@
             android:layout_width="match_parent"
             android:layout_height="30dp" />
 
+        <ImageView
+            android:id="@+id/user_icon"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/ic_user_anon" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="30dp" />
+
+        <Button
+            android:id="@+id/changeIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Change Icon" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="10dp" />
+
         <TextView
             android:id="@+id/textView"
             android:layout_width="231dp"
@@ -103,7 +123,7 @@
 
         <Space
             android:layout_width="match_parent"
-            android:layout_height="150dp" />
+            android:layout_height="10dp" />
 
         <Button
             android:id="@+id/logout"

@@ -1,25 +1,36 @@
 package com.example.gtamapirl.ui.account
 
 import android.app.AlertDialog
+import android.graphics.BitmapFactory
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
+import android.view.PixelCopy
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.graphics.scale
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.gtamapirl.MainActivity
 import com.example.gtamapirl.R
 import com.example.gtamapirl.databinding.FragmentAccountBinding
+import com.example.gtamapirl.ui.map.MapFragmentDirections
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.ktx.storage
+import com.squareup.picasso.Picasso
+import java.io.File
 
 
 class AccountFragment : Fragment() {
     private lateinit var cUser: FirebaseUser
     private var binding: FragmentAccountBinding? = null
+    private val storage = Firebase.storage.reference
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -35,6 +46,9 @@ class AccountFragment : Fragment() {
         binding = FragmentAccountBinding.bind(view)
         cUser = FirebaseAuth.getInstance().currentUser!!
 
+        loadIcon()
+
+        Picasso.get().load(cUser.photoUrl).into(binding!!.userIcon);
         binding!!.changeEmailText.setText(cUser.email)
         binding!!.changeNameText.setText(cUser.displayName)
 
@@ -55,9 +69,9 @@ class AccountFragment : Fragment() {
                 (context as MainActivity).setUserData(cUser.displayName!!, changeEmail)
 
                 Toast.makeText(
-                        view.context,
-                        getString(R.string.account_email_changed),
-                        Toast.LENGTH_LONG
+                    view.context,
+                    getString(R.string.account_email_changed),
+                    Toast.LENGTH_LONG
                 ).show()
 
                 dialog.dismiss()
@@ -93,9 +107,9 @@ class AccountFragment : Fragment() {
                 (context as MainActivity).setUserData(changeName, cUser.email!!)
 
                 Toast.makeText(
-                        view.context,
-                        getString(R.string.accout_name_changed),
-                        Toast.LENGTH_LONG
+                    view.context,
+                    getString(R.string.accout_name_changed),
+                    Toast.LENGTH_LONG
                 ).show()
 
                 dialog.dismiss()
@@ -124,9 +138,34 @@ class AccountFragment : Fragment() {
         binding!!.logout.setOnClickListener{
             FirebaseAuth.getInstance().signOut()
             val action = AccountFragmentDirections.actionToHome()
-            findNavController().popBackStack()
+            //findNavController().popBackStack()
             findNavController().navigate(action)
             (context as MainActivity).login()
+        }
+
+        binding!!.changeIcon.setOnClickListener{
+            val action = AccountFragmentDirections.actionGoToPicker()
+            findNavController().navigate(action)
+        }
+    }
+
+    fun loadIcon() {
+        val db= Firebase.database.reference
+
+        db.child("users").child(cUser.uid).child("icon").get().addOnSuccessListener {
+            val icon = it.value.toString()
+            Log.e("ICON", icon)
+
+            var defaultIconRef = storage.child("icons/${icon}")
+            val localFile: File = File.createTempFile("tmp", "jpg")
+
+            defaultIconRef.getFile(localFile)
+                .addOnSuccessListener {
+                    val bmp = BitmapFactory.decodeFile(localFile.absolutePath).scale(400, 400)
+                    binding!!.userIcon.setImageBitmap(bmp)
+            }
+        }.addOnFailureListener{
+            Log.e("firebase", "Error getting data", it)
         }
     }
 }

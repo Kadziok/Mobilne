@@ -47,6 +47,9 @@
         <action
             android:id="@+id/action_toHome"
             app:destination="@id/nav_home" />
+        <action
+            android:id="@+id/action_goToPicker"
+            app:destination="@id/fragment_icon_picker" />
     </fragment>
 
     <fragment
@@ -78,6 +81,16 @@
             android:name="idEvent"
             app:argType="string"
             android:defaultValue="empty" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/fragment_icon_picker"
+        android:name="com.example.gtamapirl.ui.account.IconPickerFragment"
+        android:label="Icon Picker"
+        tools:layout="@layout/fragment_icon_picker">
+        <action
+            android:id="@+id/action_returnToAccount"
+            app:destination="@id/nav_account" />
     </fragment>
 
 </navigation>

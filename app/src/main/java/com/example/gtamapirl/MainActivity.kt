@@ -2,13 +2,16 @@ package com.example.gtamapirl
 
 import android.app.Activity
 import android.content.Intent
+import android.graphics.BitmapFactory
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.ActionMode
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.widget.Toolbar
 import androidx.core.app.TaskStackBuilder
+import androidx.core.graphics.scale
 import androidx.drawerlayout.widget.DrawerLayout
 import com.firebase.ui.auth.AuthUI
 import com.google.android.material.navigation.NavigationView
@@ -22,6 +25,10 @@ import androidx.navigation.ui.setupWithNavController
 import com.example.gtamapirl.data.UserData
 import com.example.gtamapirl.databinding.FragmentAccountBinding
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.ktx.storage
+import java.io.File
 
 
 class MainActivity : AppCompatActivity() {
@@ -74,6 +81,7 @@ class MainActivity : AppCompatActivity() {
         navController.navigateUp(appBarConfiguration)
         if (isLogin){
             setUserData(cUser!!.displayName!!,  cUser!!.email!!)
+            setUserIcon()
         }
         return super.onSupportNavigateUp()
     }
@@ -85,11 +93,12 @@ class MainActivity : AppCompatActivity() {
             if (resultCode == Activity.RESULT_OK) {
                 cUser = FirebaseAuth.getInstance().currentUser!!
                 setUserData(cUser!!.displayName!!,  cUser!!.email!!)
+                setUserIcon()
                 val db = FirebaseDatabase.getInstance().reference
                 db.child("users").child(cUser!!.uid).get().addOnSuccessListener {
                     when (it.value) {
                         null -> {
-                            val user = UserData(cUser!!.displayName!!, cUser!!.email!!)
+                            val user = UserData(cUser!!.displayName!!, cUser!!.email!!, "icon0.jpg")
                             db.child("users").child(cUser!!.uid).setValue(user)
                         }
                     }
@@ -106,6 +115,26 @@ class MainActivity : AppCompatActivity() {
     fun setUserData(name: String, email: String) {
         findViewById<TextView>(R.id.name).text = name
         findViewById<TextView>(R.id.email).text = email
+    }
+
+    fun setUserIcon(){
+        val db =Firebase.database.reference
+        db.child("users").child(cUser!!.uid).child("icon").get().addOnSuccessListener {
+            val icon = it.value.toString()
+
+            val storage = Firebase.storage.reference
+            Log.e("ICON", icon)
+            var defaultIconRef = storage.child("icons/${icon}")
+            val localFile: File = File.createTempFile("tmp", "jpg")
+
+            defaultIconRef.getFile(localFile)
+                .addOnSuccessListener {
+                    val bmp = BitmapFactory.decodeFile(localFile.absolutePath).scale(200, 200)
+                    findViewById<ImageView>(R.id.imageView).setImageBitmap(bmp)
+                }
+        }.addOnFailureListener{
+            Log.e("firebase", "Error getting data", it)
+        }
     }
 
     companion object {
