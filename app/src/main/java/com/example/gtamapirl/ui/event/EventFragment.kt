@@ -467,7 +467,8 @@ class EventFragment : Fragment() {
                         .child(chatId)
                         .setValue(chat)
                 }
-
+                val action = EventFragmentDirections.goToChat(chatId)
+                findNavController().navigate(action)
 
             }
             override fun onCancelled(databaseError: DatabaseError) {
@@ -475,6 +476,7 @@ class EventFragment : Fragment() {
                 Log.w("TAG", "loadPost:onCancelled", databaseError.toException())
             }
         })
+
 
     }
 

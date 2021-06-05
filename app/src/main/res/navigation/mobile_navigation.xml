@@ -91,6 +91,9 @@
             android:name="idEvent"
             app:argType="string"
             android:defaultValue="empty" />
+        <action
+            android:id="@+id/goToChat"
+            app:destination="@id/fragment_chat" />
     </fragment>
 
     <fragment
