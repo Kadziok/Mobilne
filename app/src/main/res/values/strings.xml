@@ -36,5 +36,6 @@
     <string name="account_email_changed">User email changed</string>
     <string name="save_changes">Save changes</string>
     <string name="participants">Participants</string>
+    <string name="chats">Chats</string>
 
 </resources>

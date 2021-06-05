@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.core.graphics.scale
 import androidx.recyclerview.widget.RecyclerView
 import com.example.gtamapirl.R
@@ -31,7 +30,7 @@ class ParticipantsAdapter (private val data: ArrayList<ParticipantData>)
         init {
             name = view.findViewById(R.id.name)
             state = view.findViewById(R.id.status)
-            icon = view.findViewById(R.id.participantIcon)
+            icon = view.findViewById(R.id.chatIcon)
             id = ""
             view.setOnClickListener {
                 // TODO: Onclick do profilu użytkownika / czatu

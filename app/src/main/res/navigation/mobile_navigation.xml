@@ -53,6 +53,16 @@
     </fragment>
 
     <fragment
+        android:id="@+id/nav_chats"
+        android:name="com.example.gtamapirl.ui.chats.chats_list.ChatsListFragment"
+        android:label="Chats list"
+        tools:layout="@layout/fragment_chats_list">
+        <action
+            android:id="@+id/action_nav_chats_to_fragment_chat"
+            app:destination="@id/fragment_chat" />
+    </fragment>
+
+    <fragment
         android:id="@+id/nav_events_list"
         android:name="com.example.gtamapirl.ui.my_events.EventsListFragment"
         android:label="@string/menu_events"
@@ -79,6 +89,17 @@
         tools:layout="@layout/fragment_event">
         <argument
             android:name="idEvent"
+            app:argType="string"
+            android:defaultValue="empty" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/fragment_chat"
+        android:name="com.example.gtamapirl.ui.chats.chat.ChatFragment"
+        android:label="Chat"
+        tools:layout="@layout/fragment_chat">
+        <argument
+            android:name="idChat"
             app:argType="string"
             android:defaultValue="empty" />
     </fragment>
