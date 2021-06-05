@@ -77,7 +77,6 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:layout_margin="10dp"
-            android:checkedButton="@+id/radioButton3"
             >
 
             <RadioButton

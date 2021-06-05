@@ -163,10 +163,6 @@ class EventFragment : Fragment() {
                     }
                 }
                 binding!!.radioGroup2.check(choice)
-
-                usersEvents.addValueEventListener(object: ValueEventListener{
-                    override fun onDataChange(dataSnapshot: DataSnapshot) {}
-                    override fun onCancelled(databaseError: DatabaseError) {}})
             }
             override fun onCancelled(databaseError: DatabaseError) {
                 // Getting Post failed, log a message
