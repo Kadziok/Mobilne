@@ -125,26 +125,19 @@
             android:text="@string/delete_event"
             android:visibility="gone"/>
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:text="@string/participants"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/participantsRecycler"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
 
     </LinearLayout>
     </ScrollView>
-
-    <LinearLayout
-        android:id="@+id/linearLayout2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_above="@+id/scroll"
-        android:orientation="horizontal"
-        android:paddingHorizontal="10dp">
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@android:color/white"
-
-            android:paddingHorizontal="16dp" />
-    </LinearLayout>
 
 </RelativeLayout>

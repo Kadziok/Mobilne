@@ -9,11 +9,15 @@ import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import android.widget.RadioGroup
 import androidx.navigation.fragment.navArgs
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.LinearSnapHelper
+import androidx.recyclerview.widget.SnapHelper
 import com.example.gtamapirl.MainActivity
 import com.example.gtamapirl.event.EventFragment
 import com.example.gtamapirl.R
 import com.example.gtamapirl.add_event.AddEventFragmentDirections
 import com.example.gtamapirl.data.EventData
+import com.example.gtamapirl.data.ParticipantData
 import com.example.gtamapirl.data.UserEventData
 import com.example.gtamapirl.databinding.FragmentEventBinding
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -37,6 +41,7 @@ import java.time.LocalDate
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 import java.util.*
+import kotlin.collections.ArrayList
 import kotlin.random.Random
 
 
@@ -52,8 +57,10 @@ class EventFragment : Fragment() {
     private var eventName: String? = null
     private var statusSet: Boolean = false
     private var dataSet: Boolean = false
+    private var recyclerSet: Boolean = false
     private var date: LocalDate? = null
     private var time: LocalTime? = null
+    private val participants = ArrayList<ParticipantData>()
 
 
     override fun onCreateView(
@@ -69,6 +76,16 @@ class EventFragment : Fragment() {
         eventId = args.idEvent
         cUser = FirebaseAuth.getInstance().currentUser!!
         db = Firebase.database
+
+        val recycler = binding!!.participantsRecycler
+        recycler.layoutManager = LinearLayoutManager(
+            context,
+            LinearLayoutManager.VERTICAL,
+            false
+        )
+        recycler.adapter = ParticipantsAdapter(participants)
+        val helper: SnapHelper = LinearSnapHelper()
+        helper.attachToRecyclerView(recycler)
 
 
         /***
@@ -183,17 +200,31 @@ class EventFragment : Fragment() {
         var usersEvents = db.reference.child("user_events")
         usersEvents.addValueEventListener(object: ValueEventListener{
             override fun onDataChange(dataSnapshot: DataSnapshot) {
-                for(item in dataSnapshot.children) {
-                    if(item.child(eventId).exists()) {
-                        db.reference
-                            .child("users")
-                            .child(item.key.toString())
-                            .child("name")
-                            .get().addOnSuccessListener {
-                                //binding!!.eventID.text = "\n ${it.value}"
-                            }
+                if (!recyclerSet) {
+                    for (item in dataSnapshot.children) {
+                        if (item.child(eventId).exists()) {
+                            val userEventData = item.child(eventId).getValue<UserEventData>()
+                            db.reference
+                                .child("users")
+                                .child(item.key.toString())
+                                .child("name")
+                                .get().addOnSuccessListener {
+                                    val username = it.value.toString()
+                                    participants.add(
+                                        ParticipantData(
+                                            item.key.toString(),
+                                            username,
+                                            userEventData?.state!!
+                                        )
+                                    )
+                                    binding!!.participantsRecycler.adapter?.notifyDataSetChanged()
+                                }
+                        }
                     }
+
+                    recyclerSet = true
                 }
+
             }
             override fun onCancelled(databaseError: DatabaseError) {
                 // Getting Post failed, log a message
