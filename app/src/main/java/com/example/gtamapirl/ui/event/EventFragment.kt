@@ -18,6 +18,7 @@ import com.example.gtamapirl.data.EventData
 import com.example.gtamapirl.data.ParticipantData
 import com.example.gtamapirl.data.UserEventData
 import com.example.gtamapirl.databinding.FragmentEventBinding
+import com.example.gtamapirl.event.ParticipantsAdapter
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
@@ -39,11 +40,8 @@ import java.time.LocalDate
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 import java.util.*
-<<<<<<< HEAD:app/src/main/java/com/example/gtamapirl/event/EventFragment.kt
 import kotlin.collections.ArrayList
 import kotlin.random.Random
-=======
->>>>>>> origin/main:app/src/main/java/com/example/gtamapirl/ui/event/EventFragment.kt
 
 
 class EventFragment : Fragment() {
