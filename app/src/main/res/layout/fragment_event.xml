@@ -30,46 +30,55 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/eventName"
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputDescLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_margin="10dp"
-            android:layout_gravity="center"
-            android:padding="10dp"
-            android:inputType="text"
-            android:hint="@string/event_name" />
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/eventDesc"
+            android:layout_marginStart="@dimen/activity_horizontal_margin"
+            android:layout_marginTop="@dimen/addEvent_vertical_spacing"
+            android:layout_marginEnd="@dimen/activity_horizontal_margin">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/eventDesc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/addEvent_hint_desc" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/dateInputLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_margin="10dp"
-            android:layout_gravity="center"
-            android:padding="10dp"
-            android:inputType="text"
-            android:hint="@string/event_description" />
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/eventDate"
+            android:layout_marginStart="@dimen/activity_horizontal_margin"
+            android:layout_marginTop="@dimen/addEvent_vertical_spacing"
+            android:layout_marginEnd="@dimen/activity_horizontal_margin">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/eventDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/event_date"
+                android:inputType="none" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/timeInputLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_margin="10dp"
-            android:layout_gravity="center"
-            android:padding="10dp"
-            android:inputType="text"
-            android:hint="@string/event_date"/>
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/eventTime"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_margin="10dp"
-            android:layout_gravity="center"
-            android:padding="10dp"
-            android:inputType="text"
-            android:hint="@string/event_time"/>
+            android:layout_marginStart="@dimen/activity_horizontal_margin"
+            android:layout_marginTop="@dimen/addEvent_vertical_spacing"
+            android:layout_marginEnd="@dimen/activity_horizontal_margin">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/eventTime"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/event_time"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
 
         <RadioGroup
             android:id="@+id/radioGroup2"
@@ -99,10 +108,20 @@
         </RadioGroup>
 
         <Button
-            android:id="@+id/deleteEvent"
-            android:layout_width="wrap_content"
+            android:id="@+id/saveChanges"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:layout_margin="10dp"
+            android:text="@string/save_changes"
+            android:visibility="gone"/>
+
+        <Button
+            android:id="@+id/deleteEvent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_margin="10dp"
             android:text="@string/delete_event"
             android:visibility="gone"/>
 

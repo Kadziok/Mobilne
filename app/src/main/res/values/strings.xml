@@ -34,5 +34,6 @@
     <string name="all_events">All events</string>
     <string name="accout_name_changed">User name changed</string>
     <string name="account_email_changed">User email changed</string>
+    <string name="save_changes">Save changes</string>
 
 </resources>
