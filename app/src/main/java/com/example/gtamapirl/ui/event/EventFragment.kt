@@ -207,16 +207,24 @@ class EventFragment : Fragment() {
                                 .child("users")
                                 .child(item.key.toString())
                                 .child("name")
-                                .get().addOnSuccessListener {
-                                    val username = it.value.toString()
-                                    participants.add(
-                                        ParticipantData(
-                                            item.key.toString(),
-                                            username,
-                                            userEventData?.state!!
+                                .get().addOnSuccessListener { it ->
+                                        val username = it.value.toString()
+                                        db.reference
+                                                .child("users")
+                                                .child(item.key.toString())
+                                                .child("icon")
+                                                .get().addOnSuccessListener { it2 ->
+                                                    val icon = it2.value.toString()
+                                                    participants.add(
+                                                            ParticipantData(
+                                                    item.key.toString(),
+                                                    username,
+                                                    userEventData?.state!!,
+                                                    icon
+                                            )
                                         )
-                                    )
-                                    binding!!.participantsRecycler.adapter?.notifyDataSetChanged()
+                                        binding!!.participantsRecycler.adapter?.notifyDataSetChanged()
+                                    }
                                 }
                         }
                     }
