@@ -39,6 +39,7 @@ class EventFragment : Fragment() {
     private lateinit var db: FirebaseDatabase
     private lateinit var cUser: FirebaseUser
     private lateinit var callback: OnMapReadyCallback
+    private var statusSet: Boolean = false
 
 
     override fun onCreateView(
@@ -161,15 +162,20 @@ class EventFragment : Fragment() {
         usersEvents = db.reference.child("user_events")
         usersEvents.addValueEventListener(object: ValueEventListener{
             override fun onDataChange(dataSnapshot: DataSnapshot) {
-                var choice = binding!!.radioButton3.id
-                if(dataSnapshot.child(cUser.uid).child(eventId).exists()) {
-                    val event = dataSnapshot.child(cUser.uid).child(eventId).getValue<UserEventData>()
-                    when (event?.state) {
-                        "attends" -> choice = binding!!.radioButton.id
-                        "interested" -> choice = binding!!.radioButton2.id
+                if (!statusSet) {
+                    var choice = binding!!.radioButton3.id
+                    if (dataSnapshot.child(cUser.uid).child(eventId).exists()) {
+                        val event =
+                            dataSnapshot.child(cUser.uid).child(eventId).getValue<UserEventData>()
+                        when (event?.state) {
+                            "attends" -> choice = binding!!.radioButton.id
+                            "interested" -> choice = binding!!.radioButton2.id
+                        }
                     }
+                    binding!!.radioGroup2.check(choice)
+
+                    statusSet = true
                 }
-                binding!!.radioGroup2.check(choice)
             }
             override fun onCancelled(databaseError: DatabaseError) {
                 // Getting Post failed, log a message
@@ -205,24 +211,26 @@ class EventFragment : Fragment() {
     }
 
     fun choiceChanged(group: RadioGroup, checkedId: Int) {
-        when (checkedId) {
-            binding!!.radioButton.id ->
-                db.reference.child("user_events")
-                    .child(cUser.uid)
-                    .child(eventId)
-                    .setValue(UserEventData(eventId, "attends"))
+        if (statusSet) {
+            when (checkedId) {
+                binding!!.radioButton.id ->
+                    db.reference.child("user_events")
+                        .child(cUser.uid)
+                        .child(eventId)
+                        .setValue(UserEventData(eventId, "attends"))
 
-            binding!!.radioButton2.id ->
-                db.reference.child("user_events")
-                    .child(cUser.uid)
-                    .child(eventId)
-                    .setValue(UserEventData(eventId, "interested"))
+                binding!!.radioButton2.id ->
+                    db.reference.child("user_events")
+                        .child(cUser.uid)
+                        .child(eventId)
+                        .setValue(UserEventData(eventId, "interested"))
 
-            binding!!.radioButton3.id ->
-                db.reference.child("user_events")
-                    .child(cUser.uid)
-                    .child(eventId)
-                    .removeValue()
+                binding!!.radioButton3.id ->
+                    db.reference.child("user_events")
+                        .child(cUser.uid)
+                        .child(eventId)
+                        .removeValue()
+            }
         }
     }
 
