@@ -34,7 +34,7 @@ class AllEventAdapter(private val options: FirebaseRecyclerOptions<EventData>, v
             binding.eventStatus.text = item.time // XD
             binding.eventParticipants.text =
                     item.participants.toString() +
-                    (if (item.participants == 1) " participant"  else " participants")
+                    (if (item.participants!! == 1.toLong()) " participant"  else " participants")
             binding.eventLay.setOnClickListener {
                 fragment.goToEvent(item.id!!)
             }

@@ -354,12 +354,7 @@ class EventFragment : Fragment() {
         val userId = FirebaseAuth.getInstance().currentUser!!.uid
         val db = FirebaseDatabase.getInstance().reference
 
-        db.child("events")
-            .child(eventId)
-            .child("participants").get().addOnSuccessListener {
-                db.child("events")
-                    .child(eventId)
-                    .child("icon").get().addOnSuccessListener { it2 ->
+        db.child("events").child(eventId).child("participants").get().addOnSuccessListener {
 
                         val newEvent = EventData(
                                 eventId,
@@ -367,15 +362,13 @@ class EventFragment : Fragment() {
                                 userId,
                                 binding!!.eventDate.text.toString(),
                                 binding!!.eventTime.text.toString(),
-                                latLng.latitude,
-                                latLng.longitude,
+                                latitude!!,
+                                longitude!!,
                                 binding!!.eventDesc.text.toString(),
-                                it.value as Int,
-                                it2.value as String
+                                it.value as Long,
+                                iconName
                         )
-
                         db.child("events").child(eventId).setValue(newEvent)
-                    }
             }
     }
 
@@ -507,7 +500,7 @@ class EventFragment : Fragment() {
     private fun getCallback(): OnMapReadyCallback {
         return OnMapReadyCallback { map ->
             map.clear()
-            val latLng = LatLng(latitude!!, longitude!!)
+            latLng = LatLng(latitude!!, longitude!!)
             val cameraPosition = CameraPosition.Builder()
                 .target(latLng)
                 .zoom(15f)
