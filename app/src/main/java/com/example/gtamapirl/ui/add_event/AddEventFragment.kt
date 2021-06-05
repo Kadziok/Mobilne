@@ -1,9 +1,12 @@
 package com.example.gtamapirl.ui.add_event
 
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -14,9 +17,7 @@ import com.example.gtamapirl.databinding.FragmentAddEventBinding
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.CameraPosition
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.gms.maps.model.*
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog
@@ -32,20 +33,12 @@ class AddEventFragment : Fragment() {
 
     private var date: LocalDate? = null
     private var time: LocalTime? = null
+    private var iconName: String = "1"
     private var binding: FragmentAddEventBinding? = null
     private val args: AddEventFragmentArgs by navArgs()
+    private var mapFragment: SupportMapFragment? = null
+    private var icon: BitmapDescriptor? = null
 
-    private val callback = OnMapReadyCallback { map ->
-        val latLng = LatLng(args.latitude.toDouble(), args.longitude.toDouble())
-        val cameraPosition = CameraPosition.Builder()
-                .target(latLng)
-                .zoom(15f)
-                .build()
-        map.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition))
-        map.addMarker(MarkerOptions()
-                .position(latLng)
-        )
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -56,9 +49,10 @@ class AddEventFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        icon = loadMarkerIcon(R.drawable.marker1)
 
-        val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
-        mapFragment?.getMapAsync(callback)
+        mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
+        mapFragment?.getMapAsync(getCallback())
 
         binding = FragmentAddEventBinding.bind(view)
 
@@ -88,6 +82,22 @@ class AddEventFragment : Fragment() {
             binding!!.timeInput.setText("")
         }
 
+        setMarkerImage(binding!!.marker0, "0", R.drawable.marker0)
+        setMarkerImage(binding!!.marker1, "1", R.drawable.marker1)
+        setMarkerImage(binding!!.marker2, "2", R.drawable.marker2)
+        setMarkerImage(binding!!.marker3, "3", R.drawable.marker3)
+    }
+
+    private fun setMarkerImage(markerImage: ImageView, s: String, res: Int) {
+        var bm = BitmapFactory.decodeResource(resources, res)
+        val resizedBitmap = Bitmap.createScaledBitmap(bm, 200, 200, false)
+        markerImage.setImageBitmap(resizedBitmap)
+        markerImage.setOnClickListener{
+            iconName = s
+            icon = loadMarkerIcon(res)
+            mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
+            mapFragment?.getMapAsync(getCallback())
+        }
     }
 
     private fun setDate() {
@@ -151,7 +161,8 @@ class AddEventFragment : Fragment() {
                     args.latitude.toDouble(),
                     args.longitude.toDouble(),
                     binding!!.textInputDesc.text.toString(),
-                    1
+                    1,
+                    iconName
                 )
 
                 val db = FirebaseDatabase.getInstance().reference
@@ -162,5 +173,27 @@ class AddEventFragment : Fragment() {
                 findNavController().navigate(action)
             }
         }
+    }
+
+    private fun getCallback(): OnMapReadyCallback {
+        return OnMapReadyCallback { map ->
+            map.clear()
+            val latLng = LatLng(args.latitude.toDouble(), args.longitude.toDouble())
+            val cameraPosition = CameraPosition.Builder()
+                .target(latLng)
+                .zoom(15f)
+                .build()
+            map.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition))
+            map.addMarker(MarkerOptions()
+                .position(latLng)
+                .icon(icon)
+            )
+        }
+    }
+
+    private fun loadMarkerIcon(res: Int): BitmapDescriptor {
+        val bm = BitmapFactory.decodeResource(resources, res)
+        val resizedBitmap = Bitmap.createScaledBitmap(bm, 100, 100, false)
+        return BitmapDescriptorFactory.fromBitmap(resizedBitmap)
     }
 }

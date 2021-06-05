@@ -96,7 +96,6 @@ class EventFragment : Fragment() {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 val status = dataSnapshot.getValue<String>().toString()
                 if (status == "host") {
-                    // tutaj widok dla hosta
                     binding!!.eventDesc.isEnabled = true
                     binding!!.eventDate.isEnabled = true
                     binding!!.eventTime.isEnabled = true
@@ -128,7 +127,6 @@ class EventFragment : Fragment() {
                             setTime()
                     }
                 } else {
-                    // tu widok dla innych
                     binding!!.eventDesc.isEnabled = false
                     binding!!.eventDate.isEnabled = false
                     binding!!.eventTime.isEnabled = false
@@ -301,20 +299,25 @@ class EventFragment : Fragment() {
         db.child("events")
             .child(eventId)
             .child("participants").get().addOnSuccessListener {
+                db.child("events")
+                    .child(eventId)
+                    .child("icon").get().addOnSuccessListener { it2 ->
 
-                val newEvent = EventData(
-                    eventId,
-                    eventName!!,
-                    userId,
-                    binding!!.eventDate.text.toString(),
-                    binding!!.eventTime.text.toString(),
-                    latLng.latitude,
-                    latLng.longitude,
-                    binding!!.eventDesc.text.toString(),
-                    it.value as Int
-                )
+                        val newEvent = EventData(
+                                eventId,
+                                eventName!!,
+                                userId,
+                                binding!!.eventDate.text.toString(),
+                                binding!!.eventTime.text.toString(),
+                                latLng.latitude,
+                                latLng.longitude,
+                                binding!!.eventDesc.text.toString(),
+                                it.value as Int,
+                                it2.value as String
+                        )
 
-                db.child("events").child(eventId).setValue(newEvent)
+                        db.child("events").child(eventId).setValue(newEvent)
+                    }
             }
     }
 
