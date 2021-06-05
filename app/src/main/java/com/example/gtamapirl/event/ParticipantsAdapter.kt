@@ -7,19 +7,24 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.graphics.scale
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.gtamapirl.R
 import com.example.gtamapirl.data.ParticipantData
+import com.example.gtamapirl.ui.add_event.AddEventFragmentDirections
+import com.example.gtamapirl.ui.event.EventFragment
+import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import java.io.File
 import java.util.*
 import kotlin.collections.ArrayList
 
-class ParticipantsAdapter (private val data: ArrayList<ParticipantData>)
+class ParticipantsAdapter (private val data: ArrayList<ParticipantData>, parent: EventFragment)
     : RecyclerView.Adapter<ParticipantsAdapter.ViewHolder>() {
 
     private val storage = Firebase.storage.reference
+    val parent = parent
 
     class ViewHolder(view: View, parent : ParticipantsAdapter) : RecyclerView.ViewHolder(view) {
         val name: TextView
@@ -33,14 +38,8 @@ class ParticipantsAdapter (private val data: ArrayList<ParticipantData>)
             icon = view.findViewById(R.id.chatIcon)
             id = ""
             view.setOnClickListener {
-                // TODO: Onclick do profilu użytkownika / czatu
+                parent.parent.createChat(id)
             }
-
-
-        }
-
-        private fun showDetails(parent : ParticipantsAdapter, text : String) {
-            //parent.parent.details(0, Date(), 0, text)
         }
     }
 
