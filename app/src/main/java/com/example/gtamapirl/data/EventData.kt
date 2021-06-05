@@ -9,11 +9,14 @@ class EventData {
     var description: String? = null
     var latitude: Double? = null
     var longitude: Double? = null
+    var participants: Int? = null
     var iconName: String? = null
 
     constructor()
 
-    constructor(id: String, name: String, creator: String, date: String, time: String, latitude: Double, longitude: Double, description: String, iconName: String) {
+    constructor(id: String, name: String, creator: String, date: String, time: String,
+                latitude: Double, longitude: Double, description: String,
+                participants: Int, iconName: String) {
         this.id = id
         this.name = name
         this.creator = creator
@@ -22,6 +25,7 @@ class EventData {
         this.latitude = latitude
         this.longitude = longitude
         this.description = description
+        this.participants = participants
         this.iconName = iconName
     }
 }

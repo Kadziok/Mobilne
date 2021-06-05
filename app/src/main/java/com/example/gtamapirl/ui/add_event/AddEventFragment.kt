@@ -161,6 +161,7 @@ class AddEventFragment : Fragment() {
                     args.latitude.toDouble(),
                     args.longitude.toDouble(),
                     binding!!.textInputDesc.text.toString(),
+                    1,
                     iconName
                 )
 

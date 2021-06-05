@@ -11,11 +11,8 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.navigation.fragment.findNavController
 import android.widget.RadioGroup
-import androidx.core.view.isVisible
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.LinearSnapHelper
-import androidx.recyclerview.widget.SnapHelper
 import com.example.gtamapirl.MainActivity
 import com.example.gtamapirl.R
 import com.example.gtamapirl.data.EventData
@@ -29,10 +26,7 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.*
 import com.google.firebase.database.ktx.database
 import com.google.firebase.database.ktx.getValue
 import com.google.firebase.ktx.Firebase
@@ -332,43 +326,70 @@ class EventFragment : Fragment() {
 
     private fun saveChanges() {
         binding!!.dateInputLayout.isErrorEnabled = false
-        val userId = FirebaseAuth.getInstance().currentUser!!.uid
-        val newEvent = EventData(
-            eventId,
-            eventName!!,
-            userId,
-            binding!!.eventDate.text.toString(),
-            binding!!.eventTime.text.toString(),
-            latitude!!,
-            longitude!!,
-            binding!!.eventDesc.text.toString(),
-            iconName
-        )
 
+        val userId = FirebaseAuth.getInstance().currentUser!!.uid
         val db = FirebaseDatabase.getInstance().reference
-        db.child("events").child(eventId).setValue(newEvent)
+
+        db.child("events")
+            .child(eventId)
+            .child("participants").get().addOnSuccessListener {
+                db.child("events")
+                    .child(eventId)
+                    .child("icon").get().addOnSuccessListener { it2 ->
+
+                        val newEvent = EventData(
+                                eventId,
+                                eventName!!,
+                                userId,
+                                binding!!.eventDate.text.toString(),
+                                binding!!.eventTime.text.toString(),
+                                latLng.latitude,
+                                latLng.longitude,
+                                binding!!.eventDesc.text.toString(),
+                                it.value as Int,
+                                it2.value as String
+                        )
+
+                        db.child("events").child(eventId).setValue(newEvent)
+                    }
+            }
     }
 
     private fun choiceChanged(group: RadioGroup, checkedId: Int) {
         if (statusSet) {
             when (checkedId) {
-                binding!!.radioButton.id ->
+                binding!!.radioButton.id -> {
                     db.reference.child("user_events")
                         .child(cUser.uid)
                         .child(eventId)
                         .setValue(UserEventData(eventId, "attends"))
+                    db.reference.child("events")
+                        .child(eventId)
+                        .child("participants")
+                        .setValue(ServerValue.increment(1))
+                }
 
-                binding!!.radioButton2.id ->
+                binding!!.radioButton2.id -> {
                     db.reference.child("user_events")
                         .child(cUser.uid)
                         .child(eventId)
                         .setValue(UserEventData(eventId, "interested"))
+                    db.reference.child("events")
+                        .child(eventId)
+                        .child("participants")
+                        .setValue(ServerValue.increment(1))
+                }
 
-                binding!!.radioButton3.id ->
+                binding!!.radioButton3.id -> {
                     db.reference.child("user_events")
                         .child(cUser.uid)
                         .child(eventId)
                         .removeValue()
+                    db.reference.child("events")
+                        .child(eventId)
+                        .child("participants")
+                        .setValue(ServerValue.increment(-1))
+                }
             }
         }
     }
