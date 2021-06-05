@@ -5,28 +5,30 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.view.View
+import android.view.ActionMode
 import android.widget.TextView
 import androidx.appcompat.widget.Toolbar
+import androidx.core.app.TaskStackBuilder
 import androidx.drawerlayout.widget.DrawerLayout
 import com.firebase.ui.auth.AuthUI
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.database.DatabaseReference
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
-import com.example.gtamapirl.databinding.FragmentAddEventBinding
+import com.example.gtamapirl.data.UserData
+import com.example.gtamapirl.databinding.FragmentAccountBinding
 import com.google.firebase.database.FirebaseDatabase
 
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var cUser: FirebaseUser
+    private var cUser: FirebaseUser? = null
     private lateinit var appBarConfiguration: AppBarConfiguration
+    var isLogin = false //TODO sprawdzać w każdym fragmencie czy zalogowany ;d
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,37 +42,52 @@ class MainActivity : AppCompatActivity() {
         val navController = findNavController(R.id.nav_host_fragment)
 
         appBarConfiguration = AppBarConfiguration(setOf(
-            R.id.nav_home, R.id.nav_account, R.id.nav_events_list), drawerLayout)
+                R.id.nav_home, R.id.nav_account, R.id.nav_events_list), drawerLayout)
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
+        cUser = FirebaseAuth.getInstance().currentUser
+        if (cUser == null) {
+            login()
+        } else {
+            isLogin = true
+        }
+    }
+
+    fun login() {
         startActivityForResult(
-            AuthUI.getInstance()
-                .createSignInIntentBuilder()
-                .setIsSmartLockEnabled(false)
-                .build(),
-            RC_SIGN_IN
+                AuthUI.getInstance()
+                        .createSignInIntentBuilder()
+                        .setIsSmartLockEnabled(false)
+                        .build(),
+                RC_SIGN_IN
         )
     }
 
+
     override fun onSupportNavigateUp(): Boolean {
+        super.onSupportNavigateUp()
         val navController = findNavController(R.id.nav_host_fragment)
-        return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
+        navController.navigateUp(appBarConfiguration)
+        if (isLogin){
+            setUserData(cUser!!.displayName!!,  cUser!!.email!!)
+        }
+        return super.onSupportNavigateUp()
     }
+
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == RC_SIGN_IN) {
             if (resultCode == Activity.RESULT_OK) {
                 cUser = FirebaseAuth.getInstance().currentUser!!
-                findViewById<TextView>(R.id.name).text = cUser.displayName!!
-                findViewById<TextView>(R.id.email).text = cUser.email!!
+                setUserData(cUser!!.displayName!!,  cUser!!.email!!)
                 val db = FirebaseDatabase.getInstance().reference
-                db.child("users").child(cUser.uid).get().addOnSuccessListener {
+                db.child("users").child(cUser!!.uid).get().addOnSuccessListener {
                     when (it.value) {
                         null -> {
-                            val user = UserData(cUser.displayName!!, cUser.email!!)
-                            db.child("users").child(cUser.uid).setValue(user)
+                            val user = UserData(cUser!!.displayName!!, cUser!!.email!!)
+                            db.child("users").child(cUser!!.uid).setValue(user)
                         }
                     }
                 }.addOnFailureListener{
@@ -79,6 +96,13 @@ class MainActivity : AppCompatActivity() {
 
             }
         }
+
+
+    }
+
+    fun setUserData(name: String, email: String) {
+        findViewById<TextView>(R.id.name).text = name
+        findViewById<TextView>(R.id.email).text = email
     }
 
     companion object {

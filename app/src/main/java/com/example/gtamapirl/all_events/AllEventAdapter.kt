@@ -1,9 +1,11 @@
-package com.example.gtamapirl
+package com.example.gtamapirl.all_events
 
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.example.gtamapirl.data.EventData
+import com.example.gtamapirl.R
 import com.example.gtamapirl.databinding.ItemEventBinding
 import com.firebase.ui.database.FirebaseRecyclerAdapter
 import com.firebase.ui.database.FirebaseRecyclerOptions

@@ -1,14 +1,15 @@
-package com.example.gtamapirl
+package com.example.gtamapirl.add_event
 
 import android.os.Bundle
-import android.text.format.Time
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.example.gtamapirl.*
+import com.example.gtamapirl.data.EventData
+import com.example.gtamapirl.data.UserEventData
 import com.example.gtamapirl.databinding.FragmentAddEventBinding
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -16,19 +17,14 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
-import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.android.material.textfield.TextInputEditText
-import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog
 import com.wdullaer.materialdatetimepicker.time.TimePickerDialog
-import java.time.Instant
 import java.time.LocalDate
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 import java.util.*
-import kotlin.random.Random
 import kotlin.random.Random.Default.nextInt
 
 
@@ -159,8 +155,9 @@ class AddEventFragment : Fragment() {
 
                 val db = FirebaseDatabase.getInstance().reference
                 db.child("events").child(id).setValue(newEvent)
-                db.child("user_events").child(userId).child(id).setValue(EventElement(id, "host"))
+                db.child("user_events").child(userId).child(id).setValue(UserEventData(id, "host"))
                 val action = AddEventFragmentDirections.actionGoToEvent(id)
+                findNavController().popBackStack()
                 findNavController().navigate(action)
             }
         }

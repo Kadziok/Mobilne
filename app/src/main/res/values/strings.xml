@@ -7,8 +7,8 @@
     <string name="menu_account">Account</string>
     <string name="menu_events">My events</string>
     <string name="menu_addEvent">Add event</string>
-    <string name="account_changeEmail">Change email</string>
-    <string name="account_resetPassword">Reset password</string>
+    <string name="account_changeEmail">Change</string>
+    <string name="account_resetPassword">Send reset</string>
     <string name="account_resetPassword_msg">Password reset link sent to </string>
     <string name="addEvent_hint_name">Event name</string>
     <string name="addEvent_hint_desc">Description</string>
@@ -32,5 +32,7 @@
     <string name="delete_event">Delete event</string>
 
     <string name="all_events">All events</string>
+    <string name="accout_name_changed">User name changed</string>
+    <string name="account_email_changed">User email changed</string>
 
 </resources>

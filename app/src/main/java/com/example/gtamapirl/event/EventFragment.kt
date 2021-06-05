@@ -1,4 +1,4 @@
-package com.example.gtamapirl
+package com.example.gtamapirl.event
 
 import android.os.Bundle
 import android.util.Log
@@ -6,9 +6,13 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.fragment.findNavController
 import android.widget.RadioGroup
-import android.widget.Toast
 import androidx.navigation.fragment.navArgs
+import com.example.gtamapirl.event.EventFragment
+import com.example.gtamapirl.R
+import com.example.gtamapirl.data.EventData
+import com.example.gtamapirl.data.UserEventData
 import com.example.gtamapirl.databinding.FragmentEventBinding
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -51,7 +55,10 @@ class EventFragment : Fragment() {
         cUser = FirebaseAuth.getInstance().currentUser!!
         db = Firebase.database
 
-        binding!!.deleteEvent.setOnClickListener { deleteEvent() }
+        binding!!.deleteEvent.setOnClickListener {
+            deleteEvent()
+            findNavController().popBackStack()
+        }
         binding!!.radioGroup2.setOnCheckedChangeListener { group, checkedId ->
             choiceChanged(group, checkedId)
         }
@@ -95,10 +102,10 @@ class EventFragment : Fragment() {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 val event = dataSnapshot.getValue<EventData>()
                 if (event?.id != null) {
-                    binding!!.eventName.setText(event!!.name)
-                    binding!!.eventDesc.setText(event!!.description)
-                    binding!!.eventDate.setText(event!!.date)
-                    binding!!.eventTime.setText(event!!.time)
+                    binding!!.eventName.setText(event.name)
+                    binding!!.eventDesc.setText(event.description)
+                    binding!!.eventDate.setText(event.date)
+                    binding!!.eventTime.setText(event.time)
 
                     callback = OnMapReadyCallback { map ->
                         val latLng = LatLng(event.latitude!!.toDouble(), event.longitude!!.toDouble())
@@ -156,7 +163,7 @@ class EventFragment : Fragment() {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 var choice = binding!!.radioButton3.id
                 if(dataSnapshot.child(cUser.uid).child(eventId).exists()) {
-                    val event = dataSnapshot.child(cUser.uid).child(eventId).getValue<EventElement>()
+                    val event = dataSnapshot.child(cUser.uid).child(eventId).getValue<UserEventData>()
                     when (event?.state) {
                         "attends" -> choice = binding!!.radioButton.id
                         "interested" -> choice = binding!!.radioButton2.id
@@ -203,13 +210,13 @@ class EventFragment : Fragment() {
                 db.reference.child("user_events")
                     .child(cUser.uid)
                     .child(eventId)
-                    .setValue(EventElement(eventId, "attends"))
+                    .setValue(UserEventData(eventId, "attends"))
 
             binding!!.radioButton2.id ->
                 db.reference.child("user_events")
                     .child(cUser.uid)
                     .child(eventId)
-                    .setValue(EventElement(eventId, "interested"))
+                    .setValue(UserEventData(eventId, "interested"))
 
             binding!!.radioButton3.id ->
                 db.reference.child("user_events")

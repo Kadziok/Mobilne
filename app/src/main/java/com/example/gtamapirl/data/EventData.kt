@@ -1,4 +1,4 @@
-package com.example.gtamapirl
+package com.example.gtamapirl.data
 
 class EventData {
     var id: String? = null

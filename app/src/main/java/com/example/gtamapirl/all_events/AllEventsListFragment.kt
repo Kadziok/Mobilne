@@ -1,4 +1,4 @@
-package com.example.gtamapirl
+package com.example.gtamapirl.all_events
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -8,6 +8,9 @@ import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.gtamapirl.all_events.AllEventsListFragmentDirections
+import com.example.gtamapirl.data.EventData
+import com.example.gtamapirl.R
 import com.firebase.ui.database.FirebaseRecyclerOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
