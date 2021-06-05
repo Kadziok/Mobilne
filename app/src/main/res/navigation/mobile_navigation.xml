@@ -54,9 +54,9 @@
 
     <fragment
         android:id="@+id/nav_chats"
-        android:name="com.example.gtamapirl.ui.chats.chats_list.ChatsListFragment"
+        android:name="com.example.gtamapirl.ui.chatlist.ChatsListFragment"
         android:label="Chats list"
-        tools:layout="@layout/fragment_chats_list">
+        tools:layout="@layout/fragment_chatlist">
         <action
             android:id="@+id/action_nav_chats_to_fragment_chat"
             app:destination="@id/fragment_chat" />
@@ -97,17 +97,6 @@
     </fragment>
 
     <fragment
-        android:id="@+id/fragment_chat"
-        android:name="com.example.gtamapirl.ui.chats.chat.ChatFragment"
-        android:label="Chat"
-        tools:layout="@layout/fragment_chat">
-        <argument
-            android:name="idChat"
-            app:argType="string"
-            android:defaultValue="empty" />
-    </fragment>
-
-    <fragment
         android:id="@+id/fragment_icon_picker"
         android:name="com.example.gtamapirl.ui.account.IconPickerFragment"
         android:label="Icon Picker"
@@ -115,6 +104,16 @@
         <action
             android:id="@+id/action_returnToAccount"
             app:destination="@id/nav_account" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/fragment_chat"
+        android:name="com.example.gtamapirl.ui.chat.ChatFragment"
+        android:label="Chat">
+        <argument
+            android:name="idChat"
+            app:argType="string"
+            android:defaultValue="" />
     </fragment>
 
 </navigation>

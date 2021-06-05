@@ -39,7 +39,6 @@ class AddEventFragment : Fragment() {
     private var mapFragment: SupportMapFragment? = null
     private var icon: BitmapDescriptor? = null
 
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?

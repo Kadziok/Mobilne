@@ -1,7 +1,6 @@
-package com.example.gtamapirl.ui.chats.chats_list
+package com.example.gtamapirl.ui.chatlist
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -11,8 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.gtamapirl.R
 import com.example.gtamapirl.data.ChatData
-import com.example.gtamapirl.ui.chats.ChatsListAdapter
-import com.example.gtamapirl.ui.map.MapFragmentDirections
+import com.example.gtamapirl.ui.chatlist.ChatsListAdapter
 import com.firebase.ui.database.FirebaseRecyclerOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -46,7 +44,7 @@ class ChatsListFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_chats_list, container, false)
+        return inflater.inflate(R.layout.fragment_chatlist, container, false)
     }
 
     override fun onPause() {

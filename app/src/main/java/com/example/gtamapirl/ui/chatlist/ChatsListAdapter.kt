@@ -1,4 +1,4 @@
-package com.example.gtamapirl.ui.chats
+package com.example.gtamapirl.ui.chatlist
 
 import android.content.Context
 import android.graphics.BitmapFactory
@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.gtamapirl.R
 import com.example.gtamapirl.data.ChatData
 import com.example.gtamapirl.databinding.ItemChatBinding
-import com.example.gtamapirl.ui.chats.chats_list.ChatsListFragment
+import com.example.gtamapirl.ui.chatlist.ChatsListFragment
 import com.firebase.ui.database.FirebaseRecyclerAdapter
 import com.firebase.ui.database.FirebaseRecyclerOptions
 import com.google.firebase.auth.FirebaseAuth
