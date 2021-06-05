@@ -1,18 +1,19 @@
 package com.example.gtamapirl.ui.event
 
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.navigation.fragment.findNavController
 import android.widget.RadioGroup
 import android.widget.Toast
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.LinearSnapHelper
-import androidx.recyclerview.widget.SnapHelper
 import com.example.gtamapirl.MainActivity
 import com.example.gtamapirl.R
 import com.example.gtamapirl.data.ChatData
@@ -25,9 +26,7 @@ import com.example.gtamapirl.ui.add_event.AddEventFragmentDirections
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.CameraPosition
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.gms.maps.model.*
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.*
@@ -62,7 +61,11 @@ class EventFragment : Fragment() {
     private var date: LocalDate? = null
     private var time: LocalTime? = null
     private val participants = ArrayList<ParticipantData>()
-
+    private var mapFragment: SupportMapFragment? = null
+    private var icon: BitmapDescriptor? = null
+    private var iconName: String = "1"
+    private var latitude: Double? = null
+    private var longitude: Double? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -106,7 +109,13 @@ class EventFragment : Fragment() {
                     binding!!.eventTime.isEnabled = true
                     binding!!.radioGroup2.visibility = View.GONE
                     binding!!.deleteEvent.visibility = View.VISIBLE
+                    binding!!.markers.visibility = View.VISIBLE
                     binding!!.saveChanges.visibility = View.VISIBLE
+
+                    setMarkerImage(binding!!.marker0, "0", R.drawable.marker0)
+                    setMarkerImage(binding!!.marker1, "1", R.drawable.marker1)
+                    setMarkerImage(binding!!.marker2, "2", R.drawable.marker2)
+                    setMarkerImage(binding!!.marker3, "3", R.drawable.marker3)
 
                     binding!!.deleteEvent.setOnClickListener {
                         deleteEvent()
@@ -137,6 +146,7 @@ class EventFragment : Fragment() {
                     binding!!.eventTime.isEnabled = false
                     binding!!.radioGroup2.visibility = View.VISIBLE
                     binding!!.deleteEvent.visibility = View.GONE
+                    binding!!.markers.visibility = View.GONE
                     binding!!.saveChanges.visibility = View.GONE
 
                     binding!!.radioGroup2.setOnCheckedChangeListener { group, checkedId ->
@@ -148,6 +158,7 @@ class EventFragment : Fragment() {
                 Log.w("TAG", "loadPost:onCancelled", databaseError.toException())
             }
         })
+
 
         /***
          * Pobranie danych wydarzenia
@@ -166,24 +177,30 @@ class EventFragment : Fragment() {
                         binding!!.eventDesc.setText(event.description)
                         binding!!.eventDate.setText(event.date)
                         binding!!.eventTime.setText(event.time)
+                        latitude = event.latitude!!.toDouble()
+                        longitude = event.longitude!!.toDouble()
 
-                        callback = OnMapReadyCallback { map ->
-                            latLng =
-                                LatLng(event.latitude!!.toDouble(), event.longitude!!.toDouble())
-                            val cameraPosition = CameraPosition.Builder()
-                                .target(latLng)
-                                .zoom(15f)
-                                .build()
-                            map.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition))
-                            map.addMarker(
-                                MarkerOptions()
-                                    .position(latLng)
-                            )
+                        when (event.iconName) {
+                            "0" -> {
+                                icon = loadMarkerIcon(R.drawable.marker0)
+                                iconName = "0"
+                            }
+                            "1" -> {
+                                icon = loadMarkerIcon(R.drawable.marker1)
+                                iconName = "1"
+                            }
+                            "2" -> {
+                                icon = loadMarkerIcon(R.drawable.marker2)
+                                iconName = "2"
+                            }
+                            "3" -> {
+                                icon = loadMarkerIcon(R.drawable.marker3)
+                                iconName = "3"
+                            }
                         }
 
-                        val mapFragment =
-                            childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
-                        mapFragment?.getMapAsync(callback)
+                        mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
+                        mapFragment?.getMapAsync(getCallback())
 
                         dataSet = true
                     }
@@ -270,6 +287,23 @@ class EventFragment : Fragment() {
 
     }
 
+    private fun loadMarkerIcon(res: Int): BitmapDescriptor {
+        val bm = BitmapFactory.decodeResource(resources, res)
+        val resizedBitmap = Bitmap.createScaledBitmap(bm, 100, 100, false)
+        return BitmapDescriptorFactory.fromBitmap(resizedBitmap)
+    }
+
+    private fun setMarkerImage(markerImage: ImageView, s: String, res: Int) {
+        var bm = BitmapFactory.decodeResource(resources, res)
+        val resizedBitmap = Bitmap.createScaledBitmap(bm, 200, 200, false)
+        markerImage.setImageBitmap(resizedBitmap)
+        markerImage.setOnClickListener{
+            iconName = s
+            icon = loadMarkerIcon(res)
+            mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
+            mapFragment?.getMapAsync(getCallback())
+        }
+    }
     private fun deleteEvent() {
         val usersEvents = db.reference.child("user_events")
         usersEvents.addValueEventListener(object: ValueEventListener{
@@ -447,6 +481,22 @@ class EventFragment : Fragment() {
     fun md5(input:String): String {
         val md = MessageDigest.getInstance("MD5")
         return BigInteger(1, md.digest(input.toByteArray())).toString(16).padStart(32, '0')
+    }
+
+    private fun getCallback(): OnMapReadyCallback {
+        return OnMapReadyCallback { map ->
+            map.clear()
+            val latLng = LatLng(latitude!!, longitude!!)
+            val cameraPosition = CameraPosition.Builder()
+                .target(latLng)
+                .zoom(15f)
+                .build()
+            map.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition))
+            map.addMarker(MarkerOptions()
+                .position(latLng)
+                .icon(icon)
+            )
+        }
     }
 
     companion object {

@@ -95,7 +95,24 @@ class MapFragment : Fragment() {
             }
 
             override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {
-
+                val id = snapshot.child("id").value as String
+                for (marker in markerList) {
+                    if (marker.title == id)
+                        when (snapshot.child("iconName").value.toString()) {
+                            "0" -> {
+                                marker.setIcon(loadMarkerIcon(R.drawable.marker0))
+                            }
+                            "1" -> {
+                                marker.setIcon(loadMarkerIcon(R.drawable.marker1))
+                            }
+                            "2" -> {
+                                marker.setIcon(loadMarkerIcon(R.drawable.marker2))
+                            }
+                            "3" -> {
+                                marker.setIcon(loadMarkerIcon(R.drawable.marker3))
+                            }
+                        }
+                }
             }
 
             override fun onChildRemoved(snapshot: DataSnapshot) {
