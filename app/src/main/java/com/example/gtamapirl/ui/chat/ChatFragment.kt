@@ -9,7 +9,7 @@ import android.widget.ProgressBar
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.gtamapirl.R
-import com.example.gtamapirl.data.Message
+import com.example.gtamapirl.data.MessageData
 import com.example.gtamapirl.databinding.FragmentChatBinding
 import com.firebase.ui.database.FirebaseRecyclerOptions
 import com.google.firebase.auth.FirebaseAuth
@@ -39,8 +39,8 @@ class ChatFragment : Fragment() {
 
         val id = args.idChat
         val messagesRef = db.reference.child("chats").child(id).child("messages")
-        val options = FirebaseRecyclerOptions.Builder<Message>()
-            .setQuery(messagesRef, Message::class.java)
+        val options = FirebaseRecyclerOptions.Builder<MessageData>()
+            .setQuery(messagesRef, MessageData::class.java)
             .build()
 
         adapter = MessageAdapter(options, this, cUser.uid)
@@ -55,9 +55,12 @@ class ChatFragment : Fragment() {
         binding.messageEditText.addTextChangedListener(SendButtonObserver(binding.sendButton))
 
         binding.sendButton.setOnClickListener {
-            val message = Message(
+            val currentTimestamp = System.currentTimeMillis()
+            val message = MessageData(
                 binding.messageEditText.text.toString(),
-                cUser.uid)
+                cUser.uid,
+                currentTimestamp
+            )
             db.reference.child("chats").child(id).child("messages").push().setValue(message)
             binding.messageEditText.setText("")
         }
