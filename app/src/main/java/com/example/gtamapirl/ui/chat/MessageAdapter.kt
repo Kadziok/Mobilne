@@ -32,8 +32,6 @@ class MessageAdapter(options: FirebaseRecyclerOptions<MessageData>,
         (holder as MessageAdapter.MessageHolder).bind(model)
     }
 
-
-
     inner class MessageHolder(private val binding: ItemMessageBinding) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(item: MessageData) {
@@ -68,11 +66,12 @@ class MessageAdapter(options: FirebaseRecyclerOptions<MessageData>,
                 msg.gravity = Gravity.LEFT
             }
         }
+
+        private fun Date.dateToString(s: String): Any {
+            val dateFormatter = SimpleDateFormat(s, Locale.getDefault())
+            return dateFormatter.format(this)
+        }
+
     }
-
 }
 
-private fun Date.dateToString(s: String): Any {
-    val dateFormatter = SimpleDateFormat(s, Locale.getDefault())
-    return dateFormatter.format(this)
-}
