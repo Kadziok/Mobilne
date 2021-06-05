@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import android.widget.RadioGroup
 import androidx.navigation.fragment.navArgs
+import com.example.gtamapirl.MainActivity
 import com.example.gtamapirl.event.EventFragment
 import com.example.gtamapirl.R
 import com.example.gtamapirl.data.EventData
@@ -103,6 +104,11 @@ class EventFragment : Fragment() {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 val event = dataSnapshot.getValue<EventData>()
                 if (event?.id != null) {
+                    if (event.name == null){
+                        event.name = "Event"
+                    }
+                    (activity as MainActivity).updateTitle(event.name!!)
+
                     binding!!.eventName.setText(event.name)
                     binding!!.eventDesc.setText(event.description)
                     binding!!.eventDate.setText(event.date)

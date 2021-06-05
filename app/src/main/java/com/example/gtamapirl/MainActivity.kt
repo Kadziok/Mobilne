@@ -64,6 +64,9 @@ class MainActivity : AppCompatActivity() {
         )
     }
 
+    fun updateTitle(title: String) {
+        findViewById<Toolbar>(R.id.toolbar).title = title
+    }
 
     override fun onSupportNavigateUp(): Boolean {
         super.onSupportNavigateUp()
