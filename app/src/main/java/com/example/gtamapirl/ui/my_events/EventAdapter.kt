@@ -49,7 +49,7 @@ class EventAdapter(private val options: FirebaseRecyclerOptions<UserEventData>, 
                 binding.eventParticipants.text = it.value.toString() +
                         (if (it.value!! == 1.toLong()) " participant"  else " participants")
             }
-            
+
             binding.eventStatus.text = item.state
 
             binding.eventLay.setOnClickListener {
