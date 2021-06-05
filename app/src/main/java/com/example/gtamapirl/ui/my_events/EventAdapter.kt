@@ -45,6 +45,11 @@ class EventAdapter(private val options: FirebaseRecyclerOptions<UserEventData>, 
                 Log.e("firebase", "Error getting data", it)
             }
 
+            db.child("events").child(item.id!!).child("participants").get().addOnSuccessListener {
+                binding.eventParticipants.text = it.value.toString() +
+                        (if (it.value!! == 1.toLong()) " participant"  else " participants")
+            }
+            
             binding.eventStatus.text = item.state
 
             binding.eventLay.setOnClickListener {
