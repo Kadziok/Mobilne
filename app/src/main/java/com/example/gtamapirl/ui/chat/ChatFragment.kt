@@ -54,7 +54,6 @@ class ChatFragment : Fragment() {
             }
         }
 
-
         val messagesRef = db.reference.child("chats").child(id).child("messages")
         val options = FirebaseRecyclerOptions.Builder<MessageData>()
             .setQuery(messagesRef, MessageData::class.java)
@@ -68,7 +67,7 @@ class ChatFragment : Fragment() {
         manager.stackFromEnd = true
         binding.messageRecyclerView.layoutManager = manager
         binding.messageRecyclerView.adapter = adapter
-        ScrollToBottomObserver(binding.messageRecyclerView, adapter, manager)
+        adapter.registerAdapterDataObserver(ScrollToBottomObserver(binding.messageRecyclerView, adapter, manager))
         binding.messageEditText.addTextChangedListener(SendButtonObserver(binding.sendButton))
 
         binding.sendButton.setOnClickListener {
@@ -82,5 +81,4 @@ class ChatFragment : Fragment() {
             binding.messageEditText.setText("")
         }
     }
-
 }
