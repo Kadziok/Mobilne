@@ -4,6 +4,8 @@ import android.Manifest
 import android.content.Context
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.location.Location
 import android.os.Bundle
 import android.util.Log
@@ -19,10 +21,7 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.CameraPosition
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.Marker
-import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.gms.maps.model.*
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.database.*
 
@@ -50,7 +49,10 @@ class MapFragment : Fragment() {
         getLocationPermission()
 
         map.setOnMapLongClickListener { latLng ->
-            val action = MapFragmentDirections.actionSetMarker(latLng.latitude.toFloat(), latLng.longitude.toFloat())
+            val action = MapFragmentDirections.actionSetMarker(
+                latLng.latitude.toFloat(),
+                latLng.longitude.toFloat()
+            )
             findNavController().navigate(action)
         }
 
@@ -69,10 +71,26 @@ class MapFragment : Fragment() {
                 val longitude = snapshot.child("longitude").value as Double
                 val latLng = LatLng(latitude, longitude)
                 val id = snapshot.child("id").value as String
-                val marker = map.addMarker(MarkerOptions()
-                        .position(latLng)
-                        .title(id)
-                )
+
+                val iconName = snapshot.child("iconName").value.toString()
+                val markerOptions = MarkerOptions().position(latLng).title(id)
+
+                when (iconName) {
+                    "0" -> {
+                        markerOptions.icon(loadMarkerIcon(R.drawable.marker0))
+                    }
+                    "1" -> {
+                        markerOptions.icon(loadMarkerIcon(R.drawable.marker1))
+                    }
+                    "2" -> {
+                        markerOptions.icon(loadMarkerIcon(R.drawable.marker2))
+                    }
+                    "3" -> {
+                        markerOptions.icon(loadMarkerIcon(R.drawable.marker3))
+                    }
+                }
+
+                val marker = map.addMarker(markerOptions)
                 markerList.add(marker)
             }
 
@@ -82,8 +100,8 @@ class MapFragment : Fragment() {
 
             override fun onChildRemoved(snapshot: DataSnapshot) {
                 val id = snapshot.child("id").value as String
-                for(marker in markerList) {
-                    if(marker.title == id)
+                for (marker in markerList) {
+                    if (marker.title == id)
                         marker.remove()
                 }
             }
@@ -96,6 +114,13 @@ class MapFragment : Fragment() {
                 //TODO
             }
         })
+    }
+
+
+    private fun loadMarkerIcon(res: Int): BitmapDescriptor {
+        val bm = BitmapFactory.decodeResource(resources, res)
+        val resizedBitmap = Bitmap.createScaledBitmap(bm, 100, 100, false)
+        return BitmapDescriptorFactory.fromBitmap(resizedBitmap)
     }
 
     override fun onCreateView(
@@ -136,8 +161,14 @@ class MapFragment : Fragment() {
 
     private fun setCamera() {
         val sharedPref: SharedPreferences = activity?.getPreferences(Context.MODE_PRIVATE)!!
-        val latitude = sharedPref.getFloat(KEY_LATITUDE, map!!.cameraPosition.target.latitude.toFloat())
-        val longitude = sharedPref.getFloat(KEY_LONGITUDE, map!!.cameraPosition.target.longitude.toFloat())
+        val latitude = sharedPref.getFloat(
+            KEY_LATITUDE,
+            map!!.cameraPosition.target.latitude.toFloat()
+        )
+        val longitude = sharedPref.getFloat(
+            KEY_LONGITUDE,
+            map!!.cameraPosition.target.longitude.toFloat()
+        )
         val zoom = sharedPref.getFloat(KEY_ZOOM, map!!.cameraPosition.zoom)
         val tilt = sharedPref.getFloat(KEY_TILT, map!!.cameraPosition.zoom)
         val bearing = sharedPref.getFloat(KEY_BEARING, map!!.cameraPosition.zoom)
@@ -154,7 +185,7 @@ class MapFragment : Fragment() {
     private fun setLocation() {
         if(locationPermissionGranted && lastLocation!=null) {
             val cameraPosition = CameraPosition.Builder()
-                .target( LatLng(lastLocation!!.latitude, lastLocation!!.longitude))
+                .target(LatLng(lastLocation!!.latitude, lastLocation!!.longitude))
                 .zoom(DEFAULT_ZOOM.toFloat())
                 .bearing(0.0f)
                 .tilt(0.0f)
@@ -192,11 +223,14 @@ class MapFragment : Fragment() {
     private fun getLocationPermission() {
         if (ActivityCompat.checkSelfPermission(
                 this.requireContext(),
-                Manifest.permission.ACCESS_FINE_LOCATION)
+                Manifest.permission.ACCESS_FINE_LOCATION
+            )
             != PackageManager.PERMISSION_GRANTED
         ) {
-            requestPermissions(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
-                PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION)
+            requestPermissions(
+                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+                PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION
+            )
             return
         }
         else {
@@ -205,14 +239,17 @@ class MapFragment : Fragment() {
         }
     }
 
-    override fun onRequestPermissionsResult(requestCode: Int,
-                                            permissions: Array<String>,
-                                            grantResults: IntArray) {
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<String>,
+        grantResults: IntArray
+    ) {
         locationPermissionGranted = false
         when (requestCode) {
             PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION -> {
                 if (grantResults.isNotEmpty() &&
-                    grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    grantResults[0] == PackageManager.PERMISSION_GRANTED
+                ) {
                     locationPermissionGranted = true
                     startLocationUpdates()
                 }

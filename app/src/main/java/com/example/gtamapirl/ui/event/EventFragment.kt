@@ -296,7 +296,8 @@ class EventFragment : Fragment() {
             binding!!.eventTime.text.toString(),
             latLng.latitude,
             latLng.longitude,
-            binding!!.eventDesc.text.toString()
+            binding!!.eventDesc.text.toString(),
+            "1"
         )
 
         val db = FirebaseDatabase.getInstance().reference
