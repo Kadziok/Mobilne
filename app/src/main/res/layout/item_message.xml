@@ -20,4 +20,14 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:text="message" />
 
+    <TextView
+        android:id="@+id/timestamp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:text="435436643"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/messageTextView" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
