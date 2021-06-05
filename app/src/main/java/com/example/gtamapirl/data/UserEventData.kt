@@ -1,6 +1,6 @@
-package com.example.gtamapirl
+package com.example.gtamapirl.data
 
-class EventElement {
+class UserEventData {
     var id: String? = null
     var state: String? = null
 

@@ -1,18 +1,20 @@
-package com.example.gtamapirl
+package com.example.gtamapirl.my_events
 
 import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.example.gtamapirl.R
+import com.example.gtamapirl.data.UserEventData
 import com.example.gtamapirl.databinding.ItemEventBinding
 import com.firebase.ui.database.FirebaseRecyclerAdapter
 import com.firebase.ui.database.FirebaseRecyclerOptions
 import com.google.firebase.database.FirebaseDatabase
 
 
-class EventAdapter(private val options: FirebaseRecyclerOptions<EventElement>, val fragment : EventsListFragment) :
-    FirebaseRecyclerAdapter<EventElement, RecyclerView.ViewHolder>(options) {
+class EventAdapter(private val options: FirebaseRecyclerOptions<UserEventData>, val fragment : EventsListFragment) :
+    FirebaseRecyclerAdapter<UserEventData, RecyclerView.ViewHolder>(options) {
     lateinit var context : Context
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -28,7 +30,7 @@ class EventAdapter(private val options: FirebaseRecyclerOptions<EventElement>, v
         binding.root
     ) {
 
-        fun bind(item: EventElement) {
+        fun bind(item: UserEventData) {
             val db = FirebaseDatabase.getInstance().reference
 
             db.child("events").child(item.id!!).child("name").get().addOnSuccessListener {
@@ -56,7 +58,7 @@ class EventAdapter(private val options: FirebaseRecyclerOptions<EventElement>, v
     override fun onBindViewHolder(
         holder: RecyclerView.ViewHolder,
         position: Int,
-        model: EventElement
+        model: UserEventData
     ) {
         (holder as EventViewHolder).bind(model)
     }

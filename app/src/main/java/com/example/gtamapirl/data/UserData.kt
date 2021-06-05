@@ -1,4 +1,4 @@
-package com.example.gtamapirl
+package com.example.gtamapirl.data
 
 class UserData {
     var name: String? = null

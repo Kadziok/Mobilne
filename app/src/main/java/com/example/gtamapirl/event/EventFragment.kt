@@ -1,4 +1,4 @@
-package com.example.gtamapirl
+package com.example.gtamapirl.event
 
 import android.os.Bundle
 import android.util.Log
@@ -7,8 +7,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.RadioGroup
-import android.widget.Toast
 import androidx.navigation.fragment.navArgs
+import com.example.gtamapirl.event.EventFragment
+import com.example.gtamapirl.R
+import com.example.gtamapirl.data.EventData
+import com.example.gtamapirl.data.UserEventData
 import com.example.gtamapirl.databinding.FragmentEventBinding
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -156,7 +159,7 @@ class EventFragment : Fragment() {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 var choice = binding!!.radioButton3.id
                 if(dataSnapshot.child(cUser.uid).child(eventId).exists()) {
-                    val event = dataSnapshot.child(cUser.uid).child(eventId).getValue<EventElement>()
+                    val event = dataSnapshot.child(cUser.uid).child(eventId).getValue<UserEventData>()
                     when (event?.state) {
                         "attends" -> choice = binding!!.radioButton.id
                         "interested" -> choice = binding!!.radioButton2.id
@@ -207,13 +210,13 @@ class EventFragment : Fragment() {
                 db.reference.child("user_events")
                     .child(cUser.uid)
                     .child(eventId)
-                    .setValue(EventElement(eventId, "attends"))
+                    .setValue(UserEventData(eventId, "attends"))
 
             binding!!.radioButton2.id ->
                 db.reference.child("user_events")
                     .child(cUser.uid)
                     .child(eventId)
-                    .setValue(EventElement(eventId, "interested"))
+                    .setValue(UserEventData(eventId, "interested"))
 
             binding!!.radioButton3.id ->
                 db.reference.child("user_events")

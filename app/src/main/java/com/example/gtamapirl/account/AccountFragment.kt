@@ -1,4 +1,4 @@
-package com.example.gtamapirl
+package com.example.gtamapirl.account
 
 import android.app.AlertDialog
 import android.os.Bundle
@@ -7,7 +7,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
+import com.example.gtamapirl.MainActivity
+import com.example.gtamapirl.R
 import com.example.gtamapirl.databinding.FragmentAccountBinding
+import com.example.gtamapirl.map.MapFragmentDirections
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.UserProfileChangeRequest
@@ -51,6 +55,12 @@ class AccountFragment : Fragment() {
 
                 (context as MainActivity).setUserData(cUser.displayName!!, changeEmail)
 
+                Toast.makeText(
+                        view.context,
+                        getString(R.string.account_email_changed),
+                        Toast.LENGTH_LONG
+                ).show()
+
                 dialog.dismiss()
             }
             builder.setNegativeButton(
@@ -83,6 +93,12 @@ class AccountFragment : Fragment() {
 
                 (context as MainActivity).setUserData(changeName, cUser.email!!)
 
+                Toast.makeText(
+                        view.context,
+                        getString(R.string.accout_name_changed),
+                        Toast.LENGTH_LONG
+                ).show()
+
                 dialog.dismiss()
             }
             builder.setNegativeButton(
@@ -104,6 +120,13 @@ class AccountFragment : Fragment() {
                 getString(R.string.account_resetPassword_msg) + " " + cUser.email.toString(),
                 Toast.LENGTH_LONG
             ).show()
+        }
+
+        binding!!.logout.setOnClickListener{
+            FirebaseAuth.getInstance().signOut()
+            val action = AccountFragmentDirections.actionToHome()
+            findNavController().navigate(action)
+            (context as MainActivity).login()
         }
     }
 }

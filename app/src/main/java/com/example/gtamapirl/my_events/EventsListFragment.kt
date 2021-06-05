@@ -1,4 +1,4 @@
-package com.example.gtamapirl
+package com.example.gtamapirl.my_events
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -8,6 +8,9 @@ import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.gtamapirl.my_events.EventsListFragmentDirections
+import com.example.gtamapirl.R
+import com.example.gtamapirl.data.UserEventData
 import com.firebase.ui.database.FirebaseRecyclerOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -24,8 +27,8 @@ class EventsListFragment : Fragment() {
         val db = Firebase.database
 
         val userEventsRef = db.reference.child("user_events").child(cUser.uid)
-        val options = FirebaseRecyclerOptions.Builder<EventElement>()
-            .setQuery(userEventsRef, EventElement::class.java)
+        val options = FirebaseRecyclerOptions.Builder<UserEventData>()
+            .setQuery(userEventsRef, UserEventData::class.java)
             .build()
 
         adapter = EventAdapter(options, this)
