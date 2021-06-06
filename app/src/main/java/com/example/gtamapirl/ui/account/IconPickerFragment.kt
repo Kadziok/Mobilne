@@ -2,7 +2,6 @@ package com.example.gtamapirl.ui.account
 
 import android.graphics.BitmapFactory
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -12,8 +11,6 @@ import androidx.core.graphics.scale
 import androidx.navigation.fragment.findNavController
 import com.example.gtamapirl.MainActivity
 import com.example.gtamapirl.R
-import com.example.gtamapirl.databinding.FragmentAccountBinding
-import com.example.gtamapirl.databinding.FragmentEventBinding
 import com.example.gtamapirl.databinding.FragmentIconPickerBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser

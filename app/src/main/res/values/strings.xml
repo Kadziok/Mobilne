@@ -3,39 +3,56 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_desc">Navigation header</string>
+
     <string name="menu_home">Home</string>
     <string name="menu_account">Account</string>
-    <string name="menu_events">My events</string>
     <string name="menu_addEvent">Add event</string>
-    <string name="account_changeEmail">Change</string>
-    <string name="account_resetPassword">Send reset</string>
-    <string name="account_resetPassword_msg">Password reset link sent to </string>
+    <string name="menu_events">My events</string>
+    <string name="menu_allEvents">All events</string>
+    <string name="menu_chats">Chats</string>
+
+    <string name="account_action_change">Change</string>
+    <string name="account_action_changeIcon">Change icon</string>
+    <string name="account_action_resetPassword">Send link</string>
+    <string name="account_action_logout">Logout</string>
+    <string name="account_title_changeEmail">Change e-mail</string>
+    <string name="account_title_changeName">Change name</string>
+    <string name="account_title_resetPassword">Reset password</string>
+    <string name="account_dialog_emailChange_title">Confirm email change</string>
+    <string name="account_dialog_changeEmail_desc">"Are you sure want to change "</string>
+    <string name="account_dialog_desc_to">" to "</string>
+    <string name="account_dialog_yes">YES</string>
+    <string name="account_dialog_no">NO</string>
+    <string name="account_dialog_changeName_title">Confirm name change</string>
+    <string name="account_dialog_changeName_desc">"Are you sure want to change "</string>
+    <string name="account_msg_resetPassword">Password reset link sent to </string>
+    <string name="account_nameChanged">User name changed</string>
+    <string name="account_emailChanged">User email changed</string>
+
+    <string name="iconPicker_title">Icon Picker</string>
+    <string name="iconPicker_info">Click your new icon</string>
+
     <string name="addEvent_hint_name">Event name</string>
     <string name="addEvent_hint_desc">Description</string>
-
     <string name="addEvent_hint_date">Date</string>
     <string name="addEvent_datePicker_title">Select event date</string>
-    <string name="addEvent_error_name_blank">Event name can\'t be blank</string>
-    <string name="addEvent_error_date_empty">Date must be set</string>
-    <string name="addEvent_hint_time">Time</string>
     <string name="addEvent_timePicker_title">Select event time</string>
+    <string name="addEvent_error_name_blank">Event name cannot be blank</string>
+    <string name="addEvent_error_date_empty">Date must be set</string>
     <string name="addEvent_error_time_empty">Time must be set</string>
+    <string name="addEvent_hint_time">Time</string>
 
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="event_name">Event name</string>
     <string name="event_description">Event description</string>
     <string name="event_date">Event date</string>
     <string name="event_time">Event time</string>
-    <string name="will_attend">Will attend</string>
-    <string name="interested">Interested</string>
-    <string name="not_interested">Not interested</string>
-    <string name="delete_event">Delete event</string>
-
-    <string name="all_events">All events</string>
-    <string name="accout_name_changed">User name changed</string>
-    <string name="account_email_changed">User email changed</string>
-    <string name="save_changes">Save changes</string>
-    <string name="participants">Participants</string>
-    <string name="chats">Chats</string>
+    <string name="event_participants_title">Participants</string>
+    <string name="event_participant">" participant"</string>
+    <string name="event_participant_plural">" participants"</string>
+    <string name="event_participation_yes">Will attend</string>
+    <string name="event_participation_maybe">Interested</string>
+    <string name="event_participation_no">Not interested</string>
+    <string name="event_delete">Delete event</string>
+    <string name="event_saveChanges">Save changes</string>
 
 </resources>

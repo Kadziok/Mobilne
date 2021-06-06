@@ -40,16 +40,16 @@ class ChatFragment : Fragment() {
 
         val id = args.idChat
 
-        db.reference.child("chats").child(id).child("user1").get().addOnSuccessListener { it ->
+        db.reference.child("chats").child(id).child("user1").get().addOnSuccessListener {
             if (cUser.uid == it.value.toString()) {
                 db.reference.child("chats").child(id).child("user2").get().addOnSuccessListener { it2 ->
                     db.reference.child("users").child(it2.value.toString()).child("name").get().addOnSuccessListener { it3 ->
-                        (activity as MainActivity).updateTitle(it3.value.toString())
+                        (activity as MainActivity?)?.updateTitle(it3.value.toString())
                     }
                 }
             } else {
                 db.reference.child("users").child(it.value.toString()).child("name").get().addOnSuccessListener { it4 ->
-                    (activity as MainActivity).updateTitle(it4.value.toString())
+                    (activity as MainActivity?)?.updateTitle(it4.value.toString())
                 }
             }
         }

@@ -5,7 +5,6 @@ import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
-import android.view.PixelCopy
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
@@ -15,7 +14,6 @@ import androidx.navigation.fragment.findNavController
 import com.example.gtamapirl.MainActivity
 import com.example.gtamapirl.R
 import com.example.gtamapirl.databinding.FragmentAccountBinding
-import com.example.gtamapirl.ui.map.MapFragmentDirections
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.UserProfileChangeRequest
@@ -56,9 +54,9 @@ class AccountFragment : Fragment() {
         binding!!.changeEmail.setOnClickListener{
             val changeEmail = binding!!.changeEmailText.text.toString()
             val builder = AlertDialog.Builder(context)
-            builder.setTitle("Confirm change email")
-            builder.setMessage("Are you sure change ${cUser.email} to ${changeEmail}?")
-            builder.setPositiveButton("YES") { dialog, _ ->
+            builder.setTitle(getString(R.string.account_dialog_emailChange_title))
+            builder.setMessage(getString(R.string.account_dialog_changeEmail_desc) + cUser.email + getString(R.string.account_dialog_desc_to) + changeEmail + "?")
+            builder.setPositiveButton(getString(R.string.account_dialog_yes)) { dialog, _ ->
                 cUser.updateEmail(changeEmail)
 
                 db.child("users")
@@ -70,14 +68,14 @@ class AccountFragment : Fragment() {
 
                 Toast.makeText(
                     view.context,
-                    getString(R.string.account_email_changed),
+                    getString(R.string.account_emailChanged),
                     Toast.LENGTH_LONG
                 ).show()
 
                 dialog.dismiss()
             }
             builder.setNegativeButton(
-                "NO"
+                getString(R.string.account_dialog_no)
             ) { dialog, which ->
                 binding!!.changeEmailText.setText(cUser.email)
                 dialog.dismiss()
@@ -90,9 +88,9 @@ class AccountFragment : Fragment() {
             val changeName = binding!!.changeNameText.text.toString()
 
             val builder = AlertDialog.Builder(context)
-            builder.setTitle("Confirm change name")
-            builder.setMessage("Are you sure change ${cUser.displayName} to ${changeName}?")
-            builder.setPositiveButton("YES") { dialog, _ ->
+            builder.setTitle(getString(R.string.account_dialog_changeName_title))
+            builder.setMessage(getString(R.string.account_dialog_changeName_desc) + cUser.displayName + getString(R.string.account_dialog_desc_to) + changeName + "?")
+            builder.setPositiveButton(getString(R.string.account_dialog_yes)) { dialog, _ ->
                 cUser.updateProfile(
                     UserProfileChangeRequest.Builder()
                         .setDisplayName(changeName)
@@ -108,14 +106,14 @@ class AccountFragment : Fragment() {
 
                 Toast.makeText(
                     view.context,
-                    getString(R.string.accout_name_changed),
+                    getString(R.string.account_nameChanged),
                     Toast.LENGTH_LONG
                 ).show()
 
                 dialog.dismiss()
             }
             builder.setNegativeButton(
-                "NO"
+                    getString(R.string.account_dialog_no)
             ) { dialog, which ->
                 binding!!.changeNameText.setText(cUser.displayName)
                 dialog.dismiss()
@@ -130,7 +128,7 @@ class AccountFragment : Fragment() {
             FirebaseAuth.getInstance().sendPasswordResetEmail(cUser.email.toString())
             Toast.makeText(
                 view.context,
-                getString(R.string.account_resetPassword_msg) + " " + cUser.email.toString(),
+                getString(R.string.account_msg_resetPassword) + " " + cUser.email.toString(),
                 Toast.LENGTH_LONG
             ).show()
         }

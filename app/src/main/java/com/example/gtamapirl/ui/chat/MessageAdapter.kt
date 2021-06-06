@@ -42,7 +42,7 @@ class MessageAdapter(options: FirebaseRecyclerOptions<MessageData>,
                 val dateString = timestamp.dateToString("E: hh:mm")
                 binding.timestamp.text = dateString.toString()
             } else {
-                binding.timestamp.text = "Before timestamp future"
+                binding.timestamp.text = "Before timestamp feature"
             }
 
             binding.messageLay.setOnClickListener {

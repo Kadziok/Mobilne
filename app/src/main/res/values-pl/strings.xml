@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="menu_home">Mapa</string>
+    <string name="menu_account">Konto</string>
+    <string name="menu_addEvent">Dodaj wydarzenie</string>
+    <string name="menu_events">Moje wydarzenia</string>
+    <string name="menu_allEvents">Lista wydarzeń</string>
+    <string name="menu_chats">Wiadomości</string>
+
+    <string name="account_action_change">Zmień</string>
+    <string name="account_action_changeIcon">Zmień ikonę</string>
+    <string name="account_action_resetPassword">Wyślij link</string>
+    <string name="account_action_logout">Wyloguj</string>
+    <string name="account_title_changeEmail">Zmień e-mail</string>
+    <string name="account_title_changeName">Zmień nazwę użytkownika</string>
+    <string name="account_title_resetPassword">Zresetuj hasło</string>
+    <string name="account_dialog_emailChange_title">Potwierdź zmianę e-maila</string>
+    <string name="account_dialog_changeEmail_desc">"Czy na pewno chcesz zmienić "</string>
+    <string name="account_dialog_desc_to">" na "</string>
+    <string name="account_dialog_yes">TAK</string>
+    <string name="account_dialog_no">NIE</string>
+    <string name="account_dialog_changeName_title">Potwierdź zmianę nazwy</string>
+    <string name="account_dialog_changeName_desc">"Czy na pewno chcesz zmienić "</string>
+    <string name="account_msg_resetPassword">Link do zmiany hasła został wysłany na adres </string>
+    <string name="account_nameChanged">Nazwa użytkownika została zmieniona</string>
+    <string name="account_emailChanged">E-mail został zmieniony</string>
+
+    <string name="iconPicker_title">Zmiana ikony</string>
+    <string name="iconPicker_info">Wybierz nową ikonę</string>
+
+    <string name="addEvent_hint_name">Nazwa wydarzenia</string>
+    <string name="addEvent_hint_desc">Opis</string>
+    <string name="addEvent_hint_date">Data</string>
+    <string name="addEvent_datePicker_title">Wybierz datę wydarzenia</string>
+    <string name="addEvent_timePicker_title">Wybierz czas wydarzenia</string>
+    <string name="addEvent_error_name_blank">Nazwa nie może być pusta</string>
+    <string name="addEvent_error_date_empty">Data musi być ustawiona</string>
+    <string name="addEvent_error_time_empty">Czas musi być ustawiony</string>
+    <string name="addEvent_hint_time">Czas</string>
+
+    <string name="event_name">Nazwa wydarzenia</string>
+    <string name="event_description">Opis wydarzenia</string>
+    <string name="event_date">Data wydarzenia</string>
+    <string name="event_time">Czas wydarzenia</string>
+    <string name="event_participants_title">Uczestnicy</string>
+    <string name="event_participant">" uczestnik"</string>
+    <string name="event_participant_plural">" uczestników"</string>
+    <string name="event_participation_yes">Wezmę udział</string>
+    <string name="event_participation_maybe">Zainteresowany</string>
+    <string name="event_participation_no">Niezainteresowany</string>
+    <string name="event_delete">Usuń wydarzenie</string>
+    <string name="event_saveChanges">Zapisz zmiany</string>
+</resources>

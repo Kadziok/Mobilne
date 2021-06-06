@@ -55,7 +55,7 @@
     <fragment
         android:id="@+id/nav_chats"
         android:name="com.example.gtamapirl.ui.chatlist.ChatsListFragment"
-        android:label="Chats list"
+        android:label="@string/menu_chats"
         tools:layout="@layout/fragment_chatlist">
         <action
             android:id="@+id/action_nav_chats_to_fragment_chat"
@@ -75,7 +75,7 @@
     <fragment
         android:id="@+id/nav_all_events_list"
         android:name="com.example.gtamapirl.ui.all_events.AllEventsListFragment"
-        android:label="@string/all_events"
+        android:label="@string/menu_allEvents"
         tools:layout="@layout/fragment_all_events_list">
         <action
             android:id="@+id/action_goToEvent"
@@ -99,7 +99,7 @@
     <fragment
         android:id="@+id/fragment_icon_picker"
         android:name="com.example.gtamapirl.ui.account.IconPickerFragment"
-        android:label="Icon Picker"
+        android:label="@string/iconPicker_title"
         tools:layout="@layout/fragment_icon_picker">
         <action
             android:id="@+id/action_returnToAccount"

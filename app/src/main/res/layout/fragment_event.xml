@@ -96,19 +96,19 @@
                 android:id="@+id/radioButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/will_attend" />
+                android:text="@string/event_participation_yes" />
 
             <RadioButton
                 android:id="@+id/radioButton2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/interested" />
+                android:text="@string/event_participation_maybe" />
 
             <RadioButton
                 android:id="@+id/radioButton3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/not_interested" />
+                android:text="@string/event_participation_no" />
         </RadioGroup>
 
         <LinearLayout
@@ -183,7 +183,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:layout_weight="1"
-            android:text="@string/save_changes"
+            android:text="@string/event_saveChanges"
             android:visibility="gone" />
 
         <Button
@@ -192,14 +192,14 @@
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:layout_weight="1"
-            android:text="@string/delete_event"
+            android:text="@string/event_delete"
             android:visibility="gone" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
-            android:text="@string/participants"/>
+            android:text="@string/event_participants_title"/>
 
         <FrameLayout
             android:layout_width="match_parent"

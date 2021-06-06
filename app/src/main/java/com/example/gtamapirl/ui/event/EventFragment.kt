@@ -11,7 +11,6 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.navigation.fragment.findNavController
 import android.widget.RadioGroup
-import android.widget.Toast
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.gtamapirl.MainActivity
@@ -22,7 +21,6 @@ import com.example.gtamapirl.data.ParticipantData
 import com.example.gtamapirl.data.UserEventData
 import com.example.gtamapirl.databinding.FragmentEventBinding
 import com.example.gtamapirl.event.ParticipantsAdapter
-import com.example.gtamapirl.ui.add_event.AddEventFragmentDirections
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
@@ -42,8 +40,6 @@ import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 import java.util.*
 import kotlin.collections.ArrayList
-import kotlin.random.Random
-
 
 class EventFragment : Fragment() {
 

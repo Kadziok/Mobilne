@@ -47,7 +47,7 @@ class EventAdapter(private val options: FirebaseRecyclerOptions<UserEventData>, 
 
             db.child("events").child(item.id!!).child("participants").get().addOnSuccessListener {
                 binding.eventParticipants.text = it.value.toString() +
-                        (if (it.value!! == 1.toLong()) " participant"  else " participants")
+                        (if (it.value!! == 1.toLong()) context.getString(R.string.event_participant)  else context.getString(R.string.event_participant_plural))
             }
 
             binding.eventStatus.text = item.state

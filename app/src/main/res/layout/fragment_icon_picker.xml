@@ -20,7 +20,7 @@
             android:id="@+id/textView4"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Click your new icon"
+            android:text="@string/iconPicker_info"
             android:textAlignment="center"
             android:textColor="@color/black"
             android:textSize="30dp"

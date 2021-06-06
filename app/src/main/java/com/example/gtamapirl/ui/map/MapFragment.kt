@@ -123,13 +123,8 @@ class MapFragment : Fragment() {
                 }
             }
 
-            override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {
-                //TODO
-            }
-
-            override fun onCancelled(error: DatabaseError) {
-                //TODO
-            }
+            override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {}
+            override fun onCancelled(error: DatabaseError) {}
         })
     }
 

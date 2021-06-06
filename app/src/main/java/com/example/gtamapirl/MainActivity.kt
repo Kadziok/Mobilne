@@ -3,33 +3,29 @@ package com.example.gtamapirl
 import android.app.Activity
 import android.content.Intent
 import android.graphics.BitmapFactory
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.view.ActionMode
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
-import androidx.core.app.TaskStackBuilder
 import androidx.core.graphics.scale
 import androidx.drawerlayout.widget.DrawerLayout
-import com.firebase.ui.auth.AuthUI
-import com.google.android.material.navigation.NavigationView
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.gtamapirl.data.UserData
-import com.example.gtamapirl.databinding.FragmentAccountBinding
+import com.firebase.ui.auth.AuthUI
+import com.google.android.material.navigation.NavigationView
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import java.io.File
-
 
 class MainActivity : AppCompatActivity() {
 
@@ -38,6 +34,7 @@ class MainActivity : AppCompatActivity() {
     var isLogin = false //TODO sprawdzać w każdym fragmencie czy zalogowany ;d
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
@@ -80,7 +77,7 @@ class MainActivity : AppCompatActivity() {
         val navController = findNavController(R.id.nav_host_fragment)
         navController.navigateUp(appBarConfiguration)
         if (isLogin){
-            setUserData(cUser!!.displayName!!,  cUser!!.email!!)
+            setUserData(cUser!!.displayName!!, cUser!!.email!!)
             setUserIcon()
         }
         return super.onSupportNavigateUp()
@@ -92,7 +89,7 @@ class MainActivity : AppCompatActivity() {
         if (requestCode == RC_SIGN_IN) {
             if (resultCode == Activity.RESULT_OK) {
                 cUser = FirebaseAuth.getInstance().currentUser!!
-                setUserData(cUser!!.displayName!!,  cUser!!.email!!)
+                setUserData(cUser!!.displayName!!, cUser!!.email!!)
                 setUserIcon()
                 val db = FirebaseDatabase.getInstance().reference
                 db.child("users").child(cUser!!.uid).get().addOnSuccessListener {
@@ -103,7 +100,7 @@ class MainActivity : AppCompatActivity() {
                         }
                     }
                 }.addOnFailureListener{
-                    Log.e("USERS", "Error to add user to database")
+                    Log.e("USERS", "Error adding user to database")
                 }
 
             }
